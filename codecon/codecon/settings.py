@@ -37,9 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_api',
-    'rest_framework',
-    'rest_framework.authtoken',
+    'codecon_api',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -53,10 +52,12 @@ MIDDLEWARE = [
 ]
 
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES" :(
-            'rest_framework.authentication.TokenAuthentication',
-            'rest_framework.authentication.SessionAuthentication',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
     ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
 }
 
 ROOT_URLCONF = 'codecon.urls'
@@ -123,12 +124,15 @@ USE_L10N = True
 
 USE_TZ = True
 
+LOGIN_URL = "/"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
 STATIC_ROOT = os.path.join(BASE_DIR, "static_cdn")
+
 MEDIA_ROOT = os.path.join(BASE_DIR, "media_cdn")
 
 STATICFILES_DIRS = [

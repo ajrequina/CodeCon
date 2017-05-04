@@ -2,17 +2,17 @@ var module = angular.module('Routes', ['ui.router'])
 
 module.config(['$stateProvider', '$urlRouterProvider', 
 	function($stateProvider, $urlRouterProvider) {
-	$urlRouterProvider.otherwise("/")
+	$urlRouterProvider.otherwise("/home")
 	
 	$stateProvider
 		.state('index', {
-			url : '/',
+			url : '/home',
 			templateUrl : '/static/pages/index.html'
 		})
 		.state('register', {
 			url : '/register',
 			templateUrl : '/static/pages/register.html',
-			controller : 'RegisterController'
+			controller : 'UserController'
 		})
 
 }])
