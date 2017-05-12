@@ -14,8 +14,24 @@
 	<form method="post" action="{% url 'posts:update_post' pk=post.pk %}">
 		{% csrf_token %}
 		<input type="text" name="post_title" placeholder="Post Title" value="{{ post.title }}"><br>
-		<input type="text" name="post_category" placeholder="Category" value="{{ post.category }}" ><br>
-		<input type="text" name="post_language" placeholder="Language" value="{{ post.language }}" ><br>
+		<select name="post_category" value="{{ post.category }}">
+		  <option value="Algorithm Analysis">Algorithm Analysis</option>
+		  <option value="Language Theory">Language Theory</option>
+		  <option value="Mobile Development">Mobile Development</option>
+		  <option value="Web Development">Web Development</option>
+		  <option value="Web Security">Web Security</option>
+		  <option value="Data Structures">Data Structures</option>
+		  <option value="General Programming">General Programming</option>
+		</select><br>
+		<select name="post_language" value="{{ post.language }}">
+		  <option value="Python">Python</option>
+		  <option value="Java">Java</option>
+		  <option value="C++">C++</option>
+		  <option value="C#">C#</option>
+		  <option value="C">C</option>
+		  <option value="Assembly">Assembly</option>
+		  <option value="Javascript" >Javascript</option>
+		</select><br>
 		<textarea name="post_content" placeholder="Content">{{ post.content }}</textarea><br>
 		<button type="submit">POST</button>
 	</form>

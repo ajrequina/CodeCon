@@ -12,6 +12,7 @@
 {% block content %}
 	<a href="{% url 'accounts:logout' %}">Logout</a>
 	<a href="{% url 'posts:homepage'%}">Home</a>
+	<a href="{% url 'posts:add_post_page' %}">Add Post</a>	
 	{% for item in posts %}
 		<hr>
 			<div>
@@ -19,7 +20,8 @@
 				{{ item.date_created }} <br>
 				{{ item.category }} : {{ item.language }} <br>
 				<h3>{{ item.content }}</h3> <br>
-				<form method="POST">
+				<form method="POST" action="{% url 'posts:add_comment_all' pk=item.pk %}">
+					{% csrf_token %}
 					<textarea name="comment_content"></textarea>
 					<button type="submit">SUBMIT</button>
 				</form>
@@ -28,6 +30,10 @@
 					{{ comment.content }} <br>
 					last {{ comment.date_created }}  <br>
 					by {{ comment.owner }}<br>
+					{% if comment.is_owner %}
+						<a id="editComment" href="#">Edit</a>
+						<a href="{% url 'posts:delete_comment' pk=comment.pk %}">Delete</a>
+					{% endif %}
 					<hr>
 				{% endfor %}
 
