@@ -26,7 +26,7 @@ LANGUAGES = (
 class Post(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField(default="")
-    date_created = models.DateTimeField(auto_now=True)
+    date_created = models.DateTimeField()
     owner = models.ForeignKey(User)
     category = models.CharField(max_length=100, choices=CATEGORIES, default='General Programming')
     language = models.CharField(max_length=100, choices=LANGUAGES, default='C')
@@ -41,22 +41,22 @@ class Post(models.Model):
 class Like(models.Model):
     liker = models.ForeignKey(User)
     like_date = models.DateTimeField(auto_now=True)
-    liked_post = models.ForeignKey(Post, related_name="likes")
+    liked_post = models.OneToOneField(Post, related_name="likes")
 
     def __unicode__(self):
         return self.liker.first_name
 
 class Comment(models.Model):
-    comment_text = models.TextField(blank=False)
-    comment_date = models.DateTimeField(auto_now=True)
+    content = models.TextField(blank=False)
+    date_created = models.DateTimeField(auto_now=True)
     commented_post = models.ForeignKey(Post, related_name="comments")
-    commenter = models.ForeignKey(User)
+    owner = models.ForeignKey(User)
 
     def __unicode__(self):
-        return self.comment_text
+        return self.content
 
     class Meta:
-        ordering = ['-comment_date']
+        ordering = ['-date_created']
 
 class FileUpload(models.Model):
     file_upload = models.FileField(upload_to='post_uploads/%Y/%m/%d/')

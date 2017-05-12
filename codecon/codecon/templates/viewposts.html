@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
-{% load dractags %}
+
 
 {% block page_title %}
-	Add Post
+	View Post
 {% endblock %}
 
 {% block css %}
@@ -15,14 +15,24 @@
 	{% for item in posts %}
 		<hr>
 			<div>
-				<h1>{{ item.title }}</h1> 
+				<h1><a href="{% url 'posts:post_detail' pk=item.pk %}">{{ item.title }}</a></h1> 
 				{{ item.date_created }} <br>
 				{{ item.category }} : {{ item.language }} <br>
 				<h3>{{ item.content }}</h3> <br>
-				{{ item.text |safe_markdown }}
+				<form method="POST">
+					<textarea name="comment_content"></textarea>
+					<button type="submit">SUBMIT</button>
+				</form>
+				{% for comment in item.all_comments %}
+					<hr>
+					{{ comment.content }} <br>
+					last {{ comment.date_created }}  <br>
+					by {{ comment.owner }}<br>
+					<hr>
+				{% endfor %}
 
-				<strong>Likes : {{item.likes.count}}</strong>
-				<!--  -->
+				<a href="{% url 'posts:like_post' pk=item.pk %}">Like</a>
+				<strong>{{item.all_likes.count}}</strong>
 			</div>
 		<hr>
 	{% endfor %}

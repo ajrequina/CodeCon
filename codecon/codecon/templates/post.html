@@ -12,17 +12,37 @@
 	<a href="{% url 'accounts:logout' %}">Logout</a>
 	<a href="{% url 'posts:homepage'%}">Home</a>
 	<a href="{% url 'posts:view_posts'%}">All Posts</a>
-	{% for item in posts %}
-		<hr>
-			<div>
-				<h1>{{ item.title }}</h1> 
-				{{ item.date_created }} <br>
-				{{ item.category }} : {{ item.language }} <br>
-				<h3>{{ item.content }}</h3> <br>
-				{{item.likes}}
-			</div>
-		<hr>
-	{% endfor %}
+	<hr>
+		<div>
+			<h1>{{ post.title }}</h1> 
+			{{ post.date_created }} <br>
+			{{ post.category }} : {{ post.language }} <br>
+			<h3>{{ post.content }}</h3> <br>
+			{% if post.is_owner %}
+				<a href="{% url 'posts:update_post_page' pk=post.pk %}">Update</a>
+				<a href="{% url 'posts:delete_post' pk=post.pk %}">Delete</a>
+			{% endif %}
+			
+			<a href="{% url 'posts:like_post' pk=post.pk %}">Like</a>
+			{{ post.likes.count }}
+
+			{% for like in post.all_likes %}
+				<hr>
+				{{ like.liker }} <br>
+				last {{ like.like_date }}  <br>
+				<hr>
+			{% endfor %}
+			{% for comment in post.all_comments %}
+				<hr>
+				{{ comment.content }} <br>
+				last {{ comment.date_created }}  <br>
+				by {{ comment.commenter }}<br>
+				<hr>
+			{% endfor %}
+
+			
+		</div>
+	<hr>
 {% endblock %}
 
 {% block javascripts %}
