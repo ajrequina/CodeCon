@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block page_title %}
+	Add Post
+{% endblock %}
+
+{% block css %}
+	{% load static %}
+{% endblock %}
+
+{% block content %}
+	<a href="{% url 'accounts:logout' %}">Logout</a>
+	<a href="{% url 'posts:homepage'%}">Home</a>
+	<a href="{% url 'posts:view_posts'%}">All Posts</a>
+	{% for item in posts %}
+		<hr>
+			<div>
+				<h1>{{ item.title }}</h1> 
+				{{ item.date_created }} <br>
+				{{ item.category }} : {{ item.language }} <br>
+				<h3>{{ item.content }}</h3> <br>
+				{{item.likes}}
+			</div>
+		<hr>
+	{% endfor %}
+{% endblock %}
+
+{% block javascripts %}
+	{% load static %}
+{% endblock %}

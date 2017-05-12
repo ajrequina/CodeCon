@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block page_title %}
+	Add Post
+{% endblock %}
+
+{% block css %}
+	{% load static %}
+{% endblock %}
+
+{% block content %}
+	<a href="{% url 'accounts:logout' %}">Logout</a>
+	<a href="{% url 'posts:homepage'%}">Home</a>
+	<form method="post" action="{% url 'posts:add_post' %}">
+		{% csrf_token %}
+		<input type="text" name="post_title" placeholder="Post Title"><br>
+		<input type="text" name="post_category" placeholder="Category" value="General Programming"><br>
+		<input type="text" name="post_language" placeholder="Language" value="C"><br>
+		<textarea name="post_content" placeholder="Content"></textarea><br>
+		<button type="submit">POST</button>
+	</form>
+{% endblock %}
+
+{% block javascripts %}
+	{% load static %}
+{% endblock %}
