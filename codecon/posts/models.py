@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django.contrib.auth.models import User
+from django.template.defaultfilters import slugify
 from django.db import models
 
 CATEGORIES = (
@@ -30,9 +31,14 @@ class Post(models.Model):
     owner = models.ForeignKey(User)
     category = models.CharField(max_length=100, choices=CATEGORIES, default='General Programming')
     language = models.CharField(max_length=100, choices=LANGUAGES, default='C')
+    slug = models.SlugField()
 
     class Meta:
         ordering = ['-date_created']
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(Post, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return self.title
@@ -44,7 +50,7 @@ class Like(models.Model):
     liked_post = models.OneToOneField(Post, related_name="likes")
 
     def __unicode__(self):
-        return self.liker.first_name
+        return self.liker
 
 class Comment(models.Model):
     content = models.TextField(blank=False)
