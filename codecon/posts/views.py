@@ -14,7 +14,6 @@ from comments.models import Comment
 
 @login_required
 def add(request):
-    print(request.GET)
     if request.method == "POST":
         form = PostForm(request.POST)
 
@@ -24,8 +23,9 @@ def add(request):
             post.date_created = date_created=datetime.datetime.now()
             post.save()
 
-        next_url = request.GET.get("next", "")
-        return redirect(next_url)
+    next_url = request.GET.get("next", "")
+    return redirect(next_url)
+
 
 @login_required
 def update(request, pk):
