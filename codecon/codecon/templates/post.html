@@ -6,15 +6,15 @@
 
 {% block css %}
 	{% load static %}
+	<link rel="stylesheet" href="{% static 'css/post.css' %}">
 {% endblock %}
 
 
 
 {% block content %}
 	<a href="{% url 'accounts:logout' %}">Logout</a>
-	<a href="{% url 'posts:homepage'%}">Home</a>
-	<a href="{% url 'posts:view_posts'%}">All Posts</a>
-	<a href="{% url 'posts:add_post_page' %}">Add Post</a>
+	<a href="{% url 'posts:list' profile=0%}">Home</a>
+	<a href="{% url 'posts:list' profile=1 %}">All Posts</a>
 	<hr>
 		<div>
 			<h1>{{ post.title }}</h1> 
@@ -22,11 +22,11 @@
 			{{ post.category }} : {{ post.language }} <br>
 			<h3>{{ post.content }}</h3> <br>
 			{% if post.is_owner %}
-				<a href="{% url 'posts:update_post_page' pk=post.pk %}">Update</a>
-				<a href="{% url 'posts:delete_post' pk=post.pk %}">Delete</a>
+				<a href="{% url 'posts:update' pk=post.pk %}">Update</a>
+				<a href="{% url 'posts:delete' pk=post.pk %}">Delete</a>
 			{% endif %}
 			
-			<a href="{% url 'posts:like_post' pk=post.pk %}">Like</a>
+			<a href="{% url 'posts:like' pk=post.pk %}">Like</a>
 			{{ post.all_likes.count }}
 
 			{% for like in post.all_likes %}
@@ -35,17 +35,17 @@
 				last {{ like.like_date }}  <br>
 				<hr>
 			{% endfor %}
-			<form method="POST" action="{% url 'posts:add_comment_detail' pk=post.pk %}">
+			<form method="POST" action="{% url 'comments:add' post_id=post.pk %}">
 				{% csrf_token %}
-				<textarea name="comment_content"></textarea>
+				<textarea name="content"></textarea>
 				<button type="submit">SUBMIT</button>
 			</form>
 
 			{% for comment in post.all_comments %}
 				<hr>
-				<form style="display:none;" method="POST" action="{% url 'posts:add_comment_detail' pk=post.pk %}">
+				<form style="display:none;" method="POST" action="{% url 'comments:add' post_id=post.pk %}?next=detail">
 					{% csrf_token %}
-					<textarea name="comment_content">{{ comment.content }}</textarea>
+					<textarea name="content">{{ comment.content }}</textarea>
 					<button type="submit">SUBMIT</button>
 				</form>
 				<div id="" >
@@ -54,7 +54,7 @@
 					by {{ comment.owner }}<br>
 					{% if comment.is_owner %}
 						<a id="editComment" href="#">Edit</a>
-						<a href="{% url 'posts:delete_comment' pk=comment.pk %}">Delete</a>
+						<a href="{% url 'comments:delete' pk=comment.pk post_id=post.pk %}">Delete</a>
 					{% endif %}
 				</div>
 				<hr>

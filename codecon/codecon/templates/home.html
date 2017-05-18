@@ -1,19 +1,38 @@
 {% extends 'base.html' %}
 
 {% block page_title %}
-	Homepage
+	MUSTA WEIRDOUGH!
 {% endblock %}
 
 {% block css %}
 	{% load static %}
+	<link rel="stylesheet" href="{% static 'css/stream.css' %}">
+	<link rel="stylesheet" href="{% static 'css/comment.css' %}">
+	<link rel="stylesheet" href="{% static 'css/home.css' %}">
 {% endblock %}
 
 {% block content %}
-	<a href="{% url 'accounts:logout' %}">Logout</a>
-	<a href="{% url 'posts:add_post_page' %}">Add Post</a>
-	<a href="{% url 'posts:view_posts' %}">View Post</a>
+	<div class="content">
+		<div class="mainPanel">
+			<div id="userPanel" class="minProfile"></div>
+			{% block publisher %}
+				{% include "publisher.html" %}
+			{% endblock%}
+			<div class="buttonSpan">
+				<a class="postButton" href="#navbar">CREATE CONTENT</a>
+			</div>
+			{% block stream %}
+				<div class="postStream">
+					{% for item in posts %}
+			   			{% include "stream.html" %}
+			   		{% endfor %}
+				</div>
+			{% endblock %}
+		</div>
+	</div>
 {% endblock %}
 
 {% block javascripts %}
 	{% load static %}
+	<script src="{% static 'js/drawer.js' %}"></script>
 {% endblock %}

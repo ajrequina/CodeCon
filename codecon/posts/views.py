@@ -1,86 +1,67 @@
-# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+import datetime
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
-import datetime
 from django.contrib.auth.decorators import login_required
 
-from posts.models import Post, Like, Comment
+from posts.models import Post, Like
+from posts.factories import post_factory
+from posts.forms import PostForm
+
+from comments.models import Comment
+
 
 @login_required
-def home_page(request):
-    return render(request, 'home.html', {})
-
-@login_required
-def add_post_page(request):
-    return render(request, 'addpost.html', {})
-
-@login_required
-def update_post_page(request, pk):
-    post = Post.objects.get(pk=pk)
-    context = {
-        "post" : post
-    }
-    return render(request, 'editpost.html', context=context)
-
-@login_required
-def view_posts(request):
-    posts = Post.objects.filter(owner=request.user)
-    blogposts = []
-    for post in posts:
-        comments = Comment.objects.filter(commented_post=post)
-        for item in comments:
-            if item.owner == request.user:
-                item.is_owner = True
-            else:
-                item.is_owner = False
-
-        post.all_comments = comments
-        post.all_likes = Like.objects.filter(liked_post=post)
-
-    context = {
-        "posts" : posts
-    }
-
-    return render(request, 'viewposts.html', context=context)
-
-@login_required
-def add_post(request):
+def add(request):
+    print(request.GET)
     if request.method == "POST":
-        title = request.POST.get('post_title')
-        category = request.POST.get('post_category')
-        owner = request.user
-        language = request.POST.get('post_language')
-        content = request.POST.get('post_content')
+        form = PostForm(request.POST)
 
-        Post.objects.create(title=title, category=category, owner=owner, language=language, content=content, date_created=datetime.datetime.now())
-        return redirect("posts:view_posts")
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.owner = request.user
+            post.date_created = date_created=datetime.datetime.now()
+            post.save()
+
+        next_url = request.GET.get("next", "")
+        return redirect(next_url)
 
 @login_required
-def update_post(request, pk):
+def update(request, pk):
     if request.method == "POST":
-        instance = Post.objects.get(pk=pk)
-        instance.title = request.POST.get('post_title')
-        instance.category = request.POST.get('post_category')
-        instance.language = request.POST.get('post_language')
-        instance.content = request.POST.get('post_content')
+        post = Post.objects.get(pk=pk)
+        form = PostForm(request.POST)
 
-        instance.save()
+        if form.is_valid():
+            data = form.cleaned_data
+            post.title = data['title']
+            post.content = data['content']
+            post.language = data['language']
+            post.category = data['category']
+            post.save()
 
-        return redirect("posts:post_detail", pk=pk)
+        return redirect("posts:detail", pk=pk)
+
+    elif request.method == "GET":
+        post = Post.objects.get(pk=pk)
+        context = {
+            "post" : post
+        }
+        return render(request, 'editpost.html', context=context)
+
 
 @login_required
-def delete_post(request, pk):
+def delete(request, pk):
     if request.method == "GET":
         instance = Post.objects.get(pk=pk)
-        print(instance)
         instance.delete()
 
-    return redirect("posts:view_posts")
+    return HttpResponseRedirect(request.path)
+
 
 @login_required
-def post_detail(request, pk):
+def detail(request, pk):
     post = Post.objects.get(pk=pk)
     comments = Comment.objects.filter(commented_post=post)
     for item in comments:
@@ -103,39 +84,29 @@ def post_detail(request, pk):
 
     return render(request, 'post.html', context=context)
 
+
 @login_required
-def like_post(request, pk):
-    post = Post.objects.get(pk=pk)
+def list(request, profile="0"):
+    posts = post_factory.list(request.user, profile)
+    context = {
+        "posts" : posts,
+        "owner" : request.user
+    }
+
+    if profile == "0":
+        return render(request, 'home.html', context=context)
+    else:
+        return render(request, 'profile.html', context=context)
+
+
+@login_required
+def like(request, post_id):
+    post = Post.objects.get(pk=post_id)
     if len(Like.objects.filter(liker=request.user, liked_post=post)) == 0:
         Like.objects.create(liker=request.user, liked_post=post)
     else:
         instance = Like.objects.get(liker=request.user, liked_post=post)
         instance.delete()
 
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
-@login_required
-def add_comment_detail(request, pk):
-    post = Post.objects.get(pk=pk)
-    content = request.POST.get("comment_content")
-    owner = request.user
-    Comment.objects.create(content=content, commented_post=post, owner=owner)
-    return redirect('posts:post_detail', pk=pk)
-
-@login_required
-def add_comment_all(request, pk):
-    post = Post.objects.get(pk=pk)
-    content = request.POST.get("comment_content")
-    owner = request.user
-    Comment.objects.create(content=content, commented_post=post, owner=owner)
-    return redirect('posts:view_posts')
-
-@login_required
-def delete_comment(request, pk):
-    instance = Comment.objects.get(pk=pk)
-    instance.delete()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
-
-
-
+    next_url = request.GET.get("next", "")
+    return redirect(next_url)

@@ -1,0 +1,7 @@
+pusher_client = pusher.Pusher(
+  app_id='340542',
+  key='157c6c0d2f18975fc3b2',
+  secret='c157940fe56d2529f3d2',
+  cluster='ap1',
+  ssl=True
+)
