@@ -34,6 +34,8 @@ def change_info(request):
             }
             return render(request, 'settings.html', context=context)
 
+    return redirect("profiles:setting")
+
 
 @login_required
 def change_credentials(request):
@@ -59,35 +61,67 @@ def change_credentials(request):
             }
             return render(request, 'settings.html', context=context)
 
+    return redirect("profiles:setting")
 
 def change_password(request):
     if request.method == 'POST':
         new_password1 = request.POST.get("new_password1")
         new_password2 = request.POST.get("new_password2")
-        old_password1 = request.POST.get("old_password1")
+        old_password = request.POST.get("old_password")
 
         user = User.objects.get(pk=request.user.pk)
-        print(user.check_password(old_password1))
-        return render(request, 'settings.html', {})
+        errors = []
+        if new_password1 == None or new_password2 == None or old_password == None:
+            if new_password1 == None:
+                errors.append("Enter your new password.")
+            elif new_password2 == None:
+                errors.append("Confirm your new password.")
+            elif old_password == None:
+                errors.append("Enter your old password.")
+        else:
+            if len(new_password1) < 8 or len(new_password2) < 8 or len(old_password) < 8:
+                errors.append("Passwords must be at least 8 characters.")
+            elif new_password1 != new_password2:
+                errors.append("New passwords do not match.")
+            elif not user.check_password(old_password):
+                errors.append("Enter your correct old password.")
 
-def change_profile_photo(request, pk):
+        if len(errors) == 0:
+            user.set_password(new_password1)
+            user.save()
+            return redirect("accounts:logout")
+        else:
+            context = {
+                "password_errors" : errors
+            }
+
+            return render(request, 'settings.html', context=context)
+
+    return redirect("profiles:setting")
+
+def change_profile_photo(request):
     if request.method == 'POST':
-        user = User.objects.get(pk=pk)
-        owner = {"owner": user}
-        form = ProfilePhotoForm(request.FILES, owner)
+        user = User.objects.get(pk=request.user.pk)
+        print(request.FILES)
+        form = ProfilePhotoForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
-            return redirect('posts:homepage')
+            return redirect('posts:list', profile="1")
+
+    return redirect("profiles:setting")
 
 
-def change_cover_photo(request, pk):
+def change_cover_photo(request):
     if request.method == 'POST':
-        user = User.objects.get(pk=pk)
-        owner = {"owner": user}
-        form = CoverPhotoForm(request.FILES, owner)
+        user = User.objects.get(pk=request.user.pk)
+
+        form = CoverPhotoForm(request.POST, request.FILES, instance=request.user)
+        print("CHANGE COVER PHOTO")
         if form.is_valid():
             form.save()
-            return redirect('posts:homepage')
+            return redirect('posts:list', profile="1")
+
+    return redirect("profiles:setting")
 
 
 def change_profile_photos(request, pk):

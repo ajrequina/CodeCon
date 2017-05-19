@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'posts',
     'profiles',
     'comments',
+    'django_cleanup',
 ]
 
 MIDDLEWARE = [
@@ -129,6 +130,8 @@ STATIC_URL = '/codecon/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "codecon/static_cdn")
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "codecon/media_cdn")
+
+MEDIA_URL = '/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "codecon/static"),

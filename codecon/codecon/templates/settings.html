@@ -45,9 +45,23 @@
          <input type="password" name="new_password2" id="new_password" placeholder="Confirm New Password"><br>
         <input type="password" name="old_password" id="new_password" placeholder="Old Password"><br>
         <button type="submit">Update Password</button><br>
-        {% for item in credential_errors %}
+        {% for item in password_errors %}
           {{ item }} <br>
         {% endfor %}
+      </form>
+
+      <h1>Change Profile Photo</h1>
+      <form method="post" enctype="multipart/form-data" action="{% url 'profiles:change_profpic' %}">
+        {% csrf_token %}
+        <input type="file" name="profile_photo">
+        <button type="submit">Upload</button>
+      </form>
+
+      <h1>Change Cover Photo</h1>
+      <form method="post" enctype="multipart/form-data" action="{% url 'profiles:change_coverpic' %}">
+        {% csrf_token %}
+        <input type="file" name="cover_photo">
+        <button type="submit">Upload</button>
       </form>
     </div>
     
