@@ -3,17 +3,29 @@
  <!DOCTYPE html>
  <html>
  <head>
-     <title>
-          {% block page_title %}
-          {% endblock %}
-     </title>
-     <meta charset="utf-8">
-     <script src="{% static 'library/jquery-3.1.0.min.js' %}"></script>
-     {% block css %}{% endblock %}
-     
+	<title>
+	  {% block page_title %}{% endblock %}
+	</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script src="{% static 'library/jquery-3.1.0.min.js' %}"></script>
+		<link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:700' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Roboto:100' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="{% static 'css/base.css' %}">
+	{% block css %}{% endblock %}
  </head>
  <body>
-     {% block content %}{% endblock %}
-     {% block javascripts %}{% endblock %}
+ 	<div id="navbar" class="navbar">
+		<h1 class="logo"><a class="home" href="{% url 'posts:list' profile=0 %}">CODECON</a></h1>
+		{% block settings%}
+
+		{% endblock %}
+	</div>
+	<div class="container gradient">
+		{% block content %}{% endblock %}
+	</div>
+	{% block javascripts %}{% endblock %}
+
  </body>
  </html>

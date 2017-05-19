@@ -6,16 +6,26 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 
+from accounts.validators import check_login_fields, check_reg_fields
+
+
+#  HTML files
 def account_form(request):
+	if request.user.is_authenticated():
+		return redirect('posts:list')
+
 	return render(request, 'account.html', {})
 
+
+# Account Operations
 def logout_user(request):
 	logout(request)
 	return redirect('accounts:account_form')
 
+
 def login_user(request):
 	if request.user.is_authenticated():
-		return redirect('posts:homepage')
+		return redirect('posts:list', profile=0)
 
 	username = request.POST.get('login_username')
 	password = request.POST.get('login_password')
@@ -25,7 +35,7 @@ def login_user(request):
 		if user is not None:
 			if user.is_active:
 				login(request, user)
-				return redirect('posts:homepage')
+				return redirect('posts:list')
 		else:
 			errors.append("Incorrect password.")
 
@@ -37,6 +47,7 @@ def login_user(request):
 		"login_errors" : errors
 	}
 	return render(request, 'account.html', context=context)
+
 
 def register_user(request):
 	username = request.POST.get('reg_username')
@@ -51,7 +62,7 @@ def register_user(request):
 		user.set_password(password1)
 		user.save()
 		login(request, user)
-		return redirect('posts:homepage')
+		return redirect('posts:list', profile=0)
 	else:
 		if not username:
 			username = ""
@@ -71,46 +82,3 @@ def register_user(request):
 		}
 
 		return render(request, 'account.html', context=context)
-
-def check_login_fields(username, password):
-	errors = []
-	if not username:
-		errors.append("Username is required.")
-	if not password:
-		errors.append("Password is required.")
-	else:
-		if User.objects.filter(username=username).count() <= 0:
-			errors.append("User does not exists.")
-
-	return errors
-
-
-def check_reg_fields(username, email, first_name, last_name, password1, password2):
-	errors = []
-	if not username:
-		errors.append("Username is required.")
-	else:
-		if len(username) < 8:
-			errors.append("Username must be at least 8 characters.")
-		elif User.objects.filter(username=username).count() > 0:
-			errors.append("Username already exists.")
-	if not email:
-		errors.append("Email is required.")
-	else:
-		if User.objects.filter(email=email).count() > 0:
-			errors.append("Email already exists.")
-	if not first_name:
-		errors.append("Firstname is required.")
-	if not last_name:
-		errors.append("Lastname is required.")
-	if not password1:
-		errors.append("Password is required.")
-	if not password2:
-		errors.append("Confirm password is required.")
-	else:
-		if len(password1) < 8:
-			errors.append("Password must be at least 8 characters.")
-		elif password1 != password2:
-			errors.append("Passwords do not match.")
-	return errors
-

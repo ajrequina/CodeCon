@@ -1,0 +1,32 @@
+<div id="style-4" class="postPanel">
+	 <div class="dummyPanel">
+	 	<a href="{% url 'accounts:logout' %}">Logout</a>
+		<a href="{% url 'posts:list' profile='1' %}">Profile</a>
+		<a href="{% url 'profiles:setting' %}">Settings</a>
+		
+		<form method="post" action="{% url 'posts:add' %}?next={{request.path}}">
+			{% csrf_token %}
+			<input type="text" name="title" placeholder="Post Title"><br>
+			<select name="category">
+				<option value="Algorithm Analysis">Algorithm Analysis</option>
+				<option value="Language Theory">Language Theory</option>
+				<option value="Mobile Development">Mobile Development</option>
+				<option value="Web Development">Web Development</option>
+				<option value="Web Security">Web Security</option>
+				<option value="Data Structures">Data Structures</option>
+				<option value="General Programming" selected="selected">General Programming</option>
+			</select><br>
+			<select name="language">
+				<option value="Python">Python</option>
+				<option value="Java">Java</option>
+				<option value="C++">C++</option>
+				<option value="C#">C#</option>
+				<option value="C" selected="selected">C</option>
+				<option value="Assembly">Assembly</option>
+				<option value="Javascript" >Javascript</option>
+			</select><br>
+			<textarea name="content" placeholder="Content"></textarea><br>
+			<button type="submit">POST</button>
+		</form>
+	 </div>
+</div>

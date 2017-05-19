@@ -10,8 +10,8 @@
 
 {% block content %}
 	<a href="{% url 'accounts:logout' %}">Logout</a>
-	<a href="{% url 'posts:homepage'%}">Home</a>
-	<form method="post" action="{% url 'posts:update_post' pk=post.pk %}">
+	<a href="{% url 'posts:list' profile=0 %}">Home</a>
+	<form method="post" action="{% url 'posts:update' pk=post.pk %}">
 		{% csrf_token %}
 		<input type="text" name="post_title" placeholder="Post Title" value="{{ post.title }}"><br>
 		<select name="post_category" value="{{ post.category }}">

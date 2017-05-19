@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block page_title %}
+  Settings
+{% endblock %}
+
+{% block css %}
+  {% load static %}
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/stream.css' %}">
+    <link rel="stylesheet" href="{% static 'css/comment.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+      <a href="{% url 'posts:list'%}">Home</a>
+      <h1>Update Information</h1>
+      <form method="post" action="{% url 'profiles:change_info' %}">
+        {% csrf_token %}
+        <br><input type="text" name="first_name" placeholder="Firstname" value="{{ user.first_name }}"><br>
+        <input type="text" name="last_name" placeholder="Lastname" value="{{ user.last_name }}"><br>
+        <button type="submit" value="submit">Update Info</button>
+        <br>
+        {% for item in info_errors %}
+          {{ item }} <br>
+        {% endfor %}
+      </form>
+      <br>
+      <h1>Update Credentials</h1>
+      <form method="post" action="{% url 'profiles:change_credentials' %}">
+        {% csrf_token %}
+        <br><input type="text" name="username" id="username" placeholder="Username" value="{{ user.username }}"><br>
+        <input type="email" name="email" id="email" placeholder="Email" value="{{ user.email }}"><br>
+        <button type="submit">Update Credentials</button><br>
+        {% for item in credential_errors %}
+          {{ item }} <br>
+        {% endfor %}
+      </form>
+      <h1>Change Password</h1>
+      <form method="post" action="{% url 'profiles:change_password' %}">
+        {% csrf_token %}
+        <br>
+       
+        <input type="password" name="new_password1" id="new_password" placeholder="New Password"><br>
+         <input type="password" name="new_password2" id="new_password" placeholder="Confirm New Password"><br>
+        <input type="password" name="old_password" id="new_password" placeholder="Old Password"><br>
+        <button type="submit">Update Password</button><br>
+        {% for item in credential_errors %}
+          {{ item }} <br>
+        {% endfor %}
+      </form>
+    </div>
+    
+{% endblock %}
+
+{% block javascripts %}
+  {% load static %}
+{% endblock %}

@@ -23,6 +23,8 @@ from accounts import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^post/', include('posts.urls', namespace='posts')),
+    url(r'^profile/', include('profiles.urls', namespace='profiles')),
+    url(r'comment/', include('comments.urls', namespace="comments")),
     url(r'^', include('accounts.urls', namespace="accounts")),
 ]
 
