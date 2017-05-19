@@ -17,8 +17,8 @@
 	<div class="content">
 		<div class="mainPanel">
 			<div id="userPanel" class="userPanel">
-				<div class="userCover"><img class="covPhoto" src="{% static 'images/cover.png' %}"></div>
-				<div class="userPhoto"><img class="defPhoto" src="{% static 'images/default.png' %}"></div>
+				<div class="userCover"><img class="covPhoto" src="{{MEDIA_ROOT}}{{ owner.my_profile.cover_photo_url }}"></div>
+				<div class="userPhoto"><img class="defPhoto" src="{{MEDIA_ROOT}}{{ owner.my_profile.profile_photo_url }}"></div>
 				<div class="userName"><span>{{ owner.first_name }} {{ owner.last_name }}</span></div>
 				<div class="userTabs">
 					<div class="tabFollow">
