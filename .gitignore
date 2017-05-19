@@ -1,4 +1,4 @@
-*.pyc
+.pyc
 codecon/codecon/media_cdn/cover_photos/
 codecon/codecon/media_cdn/posts_files/
 codecon/codecon/media_cdn/profile_photos/
