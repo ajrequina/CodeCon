@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+
+{% block page_title %}
+  Search
+{% endblock %}
+
+{% block css %}
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+  {% load static %}
+  <div class="content">
+    <div class="mainPanel">
+      {% for item in posts %}
+         <div style="background-color: red;">
+           {{ item.title }} <br>
+           {{ item.category }} : {{ item.language }} <br>
+            {{ item.content | truncatechars:255}}
+         </div> <br>
+      {% endfor %}
+      <br>
+      {% for item in users %}
+         <div style="background-color: blue;">
+           <a href="{% url 'posts:list' page_type='profile' user_id=item.pk%}">
+              {{ item.first_name }} {{ item.last_name }} <br>
+              @{{ item.username }} <br>
+              {{ item.email }}
+           </a>
+         </div> <br>
+      {% endfor %}
+    </div>  
+  </div>
+{% endblock %}
+  
+{% block javascripts %}
+  {% load static %}
+{% endblock %}

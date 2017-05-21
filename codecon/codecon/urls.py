@@ -1,4 +1,4 @@
-"""codecon URL Configuration
+"""codecon  URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.10/topics/http/urls/
@@ -24,7 +24,8 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^post/', include('posts.urls', namespace='posts')),
     url(r'^profile/', include('profiles.urls', namespace='profiles')),
-    url(r'comment/', include('comments.urls', namespace="comments")),
+    url(r'^comment/', include('comments.urls', namespace="comments")),
+    url(r'search/', include('search.urls', namespace='query')),
     url(r'^', include('accounts.urls', namespace="accounts")),
 ]
 

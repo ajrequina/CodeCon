@@ -10,4 +10,6 @@ urlpatterns = [
     url(r'^change-password/$', views.change_password, name='change_password'),
     url(r'^change-profpic/$', views.change_profile_photo, name='change_profpic'),
     url(r'^change-coverpic/$', views.change_cover_photo, name='change_coverpic'),
+    url(r'^follow/(?P<pk>\d+)/$', views.follow, name='follow'),
+    url(r'^unfollow/(?P<pk>\d+)/$', views.unfollow, name='unfollow'),
 ]

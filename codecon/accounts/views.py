@@ -12,7 +12,7 @@ from accounts.validators import check_login_fields, check_reg_fields
 #  HTML files
 def account_form(request):
 	if request.user.is_authenticated():
-		return redirect('posts:list')
+		return redirect('posts:list', page_type='stream')
 
 	return render(request, 'account.html', {})
 
@@ -25,7 +25,7 @@ def logout_user(request):
 
 def login_user(request):
 	if request.user.is_authenticated():
-		return redirect('posts:list', profile=0)
+		return redirect('posts:list', page_type='stream')
 
 	username = request.POST.get('login_username')
 	password = request.POST.get('login_password')
@@ -35,7 +35,7 @@ def login_user(request):
 		if user is not None:
 			if user.is_active:
 				login(request, user)
-				return redirect('posts:list')
+				return redirect('posts:list', page_type='stream')
 		else:
 			errors.append("Incorrect password.")
 
@@ -61,8 +61,11 @@ def register_user(request):
 		user = User.objects.create(username=username, email=email, first_name=first_name, last_name=last_name)
 		user.set_password(password1)
 		user.save()
-		login(request, user)
-		return redirect('posts:list', profile=0)
+		user = authenticate(username=username, password=password1)
+		if user is not None:
+			if user.is_active:
+				login(request, user)
+				return redirect('posts:list', page_type='stream')
 	else:
 		if not username:
 			username = ""

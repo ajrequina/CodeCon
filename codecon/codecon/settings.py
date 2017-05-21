@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'posts',
     'profiles',
     'comments',
+    'search',
     'django_cleanup',
 ]
 

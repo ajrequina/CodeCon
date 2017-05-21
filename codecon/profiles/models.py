@@ -15,16 +15,15 @@ class Profile(models.Model):
         if self.profile_photo:
             return self.profile_photo.url
 
-        return static('images/default.png')
+        return (static('images/default.png'))
 
     @property
     def cover_photo_url(self):
         if self.cover_photo:
             return self.cover_photo.url
-
-        return static('images/cover.png')
+        return (static('images/cover.png'))
 
 
 class Follow(models.Model):
-    follower = models.ForeignKey(User, related_name="my_followers")
-    followed = models.ForeignKey(User, related_name="my_followed")
+    follower = models.ForeignKey(User, related_name="follows")
+    followed = models.ForeignKey(User, related_name="followed")
