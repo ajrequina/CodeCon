@@ -1,15 +1,18 @@
 from __future__ import unicode_literals
 import datetime
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 from posts.models import Post, Like
 from posts.factories import post_factory
 from posts.forms import PostForm
 
 from comments.models import Comment
+
+from profiles.models import Follow
 
 
 @login_required
@@ -86,14 +89,39 @@ def detail(request, pk):
 
 
 @login_required
-def list(request, profile="0"):
-    posts = post_factory.list(request.user, profile)
+def list(request, page_type='stream', user_id=None):
+    user = request.user
+    if user_id:
+        user = User.objects.get(pk=user_id)
+        posts = post_factory.list(user)
+    else:
+        posts = post_factory.list(user)
+
+    if not user.first_name:
+        user.first_name = "CodeCon"
+    if not user.last_name:
+        user.last_name = "Programmer"
+
+    is_owned = False
+    is_followed = True
+
+    if user == request.user:
+        is_owned = True
+
+    try:
+        Follow.objects.get(follower=request.user, followed=user)
+    except Exception as e:
+        is_followed = False
+
+
     context = {
         "posts" : posts,
-        "owner" : request.user
+        "owner" : user,
+        "is_owned" : is_owned,
+        "is_followed" : is_followed
     }
 
-    if profile == "0":
+    if page_type == "stream":
         return render(request, 'home.html', context=context)
     else:
         return render(request, 'profile.html', context=context)

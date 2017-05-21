@@ -4,8 +4,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.core.files.storage import FileSystemStorage
+from django.db.models import Q
 
 from profiles.forms import ProfilePhotoForm, CoverPhotoForm, ProfileForm
+from profiles.models import Follow
+
 
 @login_required
 def settings_page(request):
@@ -27,7 +30,7 @@ def change_info(request):
         errors = []
 
         if len(errors) == 0:
-            return redirect("posts:list", profile="1")
+            return redirect("posts:list", page_type='profile')
         else:
             context = {
                 "info_errors" : errors
@@ -43,18 +46,24 @@ def change_credentials(request):
         username = request.POST.get("username")
         email = request.POST.get("email")
 
+        user = User.objects.get(pk=request.user.pk)
         errors = []
-        if User.objects.filter(username=username).count() > 0:
-            errors.append("Username already exists.")
-        if User.objects.filter(email=email).count() > 0:
-            errors.append("Email already exists.")
+        usernames = User.objects.filter(username=username)
+        if usernames.count() > 0:
+            if user.username != username:
+                errors.append("Username already exists.")
+
+        emails = User.objects.filter(email=email)
+        if emails.count() > 0:
+            if user.email != email:
+                errors.append("Email already exists.")
 
         if len(errors) == 0:
             user = User.objects.get(pk=request.user.pk)
             user.username = username
             user.email = email
             user.save()
-            return redirect("posts:list", profile="1")
+            return redirect("posts:list", page_type='profile')
         else:
             context = {
                 "credential_errors" : errors
@@ -106,7 +115,7 @@ def change_profile_photo(request):
         form = ProfilePhotoForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
-            return redirect('posts:list', profile="1")
+            return redirect("posts:list", page_type='profile')
 
     return redirect("profiles:setting")
 
@@ -119,7 +128,7 @@ def change_cover_photo(request):
         print("CHANGE COVER PHOTO")
         if form.is_valid():
             form.save()
-            return redirect('posts:list', profile="1")
+            return redirect("posts:list", page_type='profile')
 
     return redirect("profiles:setting")
 
@@ -134,4 +143,40 @@ def change_profile_photos(request, pk):
             return redirect('posts:homepage')
 
 
+def follow(request, pk):
+    user = User.objects.get(pk=pk)
+    owner = request.user
 
+    found = True
+
+    try:
+        Follow.objects.get(follower=owner, followed=user)
+    except Exception as e:
+        found = False
+
+
+    if not found:
+        follow = Follow.objects.create(follower=owner, followed=user)
+        follow.save()
+
+
+    next_url = request.GET.get("next", "")
+    return redirect(next_url)
+
+
+def unfollow(request, pk):
+    user = User.objects.get(pk=pk)
+    owner = request.user
+
+    found = True
+    try:
+        Follow.objects.get(follower=owner, followed=user)
+    except Exception as e:
+        found = False
+
+    if found:
+        follow = Follow.objects.get(follower=owner, followed=user)
+        follow.delete()
+
+    next_url = request.GET.get("next", "")
+    return redirect(next_url)

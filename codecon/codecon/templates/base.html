@@ -17,7 +17,14 @@
  </head>
  <body>
  	<div id="navbar" class="navbar">
-		<h1 class="logo"><a class="home" href="{% url 'posts:list' profile=0 %}">CODECON</a></h1>
+		<h1 class="logo">
+		<form method="post" action="{% url 'query:results' %}">
+			{% csrf_token %}
+				<a class="home" href="{% url 'posts:list' page_type='stream' %}">CODECON</a></h1>
+				<input type="search" name="query" value="{{ query }}">
+				<button type="submit">Search</button>
+		</form>
+		
 		{% block settings%}
 
 		{% endblock %}

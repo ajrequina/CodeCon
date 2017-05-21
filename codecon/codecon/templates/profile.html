@@ -22,7 +22,13 @@
 				<div class="userName"><span>{{ owner.first_name }} {{ owner.last_name }}</span></div>
 				<div class="userTabs">
 					<div class="tabFollow">
-						<a class="followButton" role="button" href="">FOLLOW</a>
+					{% if not is_owned %}
+						{% if not is_followed %}
+							<a class="followButton" role="button" href="{% url 'profiles:follow' pk=owner.pk %}?next={{request.path}}">FOLLOW</a>
+						{%  else %}
+							<a class="followButton" role="button" href="{% url 'profiles:unfollow' pk=owner.pk %}?next={{request.path}}">UNFOLLOW</a>
+						{% endif %}
+					{% endif %}
 					</div>
 					<div class="tabHolder">
 						<a class="tabAction" role="button" href="">
@@ -30,11 +36,11 @@
 							<span>Published</span>
 						</a>
 						<a class="tabAction" role="button" href="">
-							<span>{{ owner.my_followers.count }}</span>
+							<span>{{ owner.followed.count 	}}</span>
 							<span>Followers</span>
 						</a>
 						<a class="tabAction" role="button" href="">
-							<span>{{ owner.my_followed.count }}</span>
+							<span>{{ owner.follows.count }}</span>
 							<span>Following</span>
 						</a>
 					</div>
@@ -44,7 +50,9 @@
 				{% include "publisher.html" %}
 			{% endblock%}
 			<div class="buttonSpan">
+				{% if is_owned %}
 				<a class="postButton" href="#navbar">CREATE CONTENT</a>
+				{% endif %}
 			</div>
 			{% block stream %}
 				<div class="postStream">

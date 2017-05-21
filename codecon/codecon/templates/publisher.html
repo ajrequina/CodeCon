@@ -1,7 +1,7 @@
 <div id="style-4" class="postPanel">
 	 <div class="dummyPanel">
 	 	<a href="{% url 'accounts:logout' %}">Logout</a>
-		<a href="{% url 'posts:list' profile='1' %}">Profile</a>
+		<a href="{% url 'posts:list' page_type='profile'%}">Profile</a>
 		<a href="{% url 'profiles:setting' %}">Settings</a>
 		
 		<form method="post" action="{% url 'posts:add' %}?next={{request.path}}">

@@ -13,7 +13,7 @@
 
 {% block content %}
     <div class="content">
-      <a href="{% url 'posts:list'%}">Home</a>
+      <a href="{% url 'posts:list' page_type='stream' %}">Home</a>
       <h1>Update Information</h1>
       <form method="post" action="{% url 'profiles:change_info' %}">
         {% csrf_token %}

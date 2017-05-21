@@ -1,7 +1,7 @@
 {% load static %}
 <div class="postItem">
 	<div class="postOwner">
-		<div class="ownerDP"><img src="{% static 'images/default.png' %}"></div>
+		<div class="ownerDP"><img src="{{MEDIA_ROOT}}{{ item.owner.my_profile.profile_photo_url }}"></div>
 		<div class="ownerDetails">
 			<div class="ownerName">
 				<span class="nameFull">{{ item.owner.first_name }} {{ item.owner.last_name }}</span>
@@ -32,7 +32,7 @@
 		<div class="commentStream">
 			{% for comment in item.all_comments %}
 				<div class="commentItem">
-					<div class="commentDP"><img src="{% static 'images/default.png' %}"></div>
+					<div class="commentDP"><img src="{{MEDIA_ROOT}}{{ comment.owner.my_profile.profile_photo_url }}"></div>
 					<div class="commentRight">
 						<div class="commentOwner">
 							<div class="commentFull">{{ comment.owner.first_name }} {{ comment.owner.last_name }}</div>

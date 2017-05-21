@@ -7,8 +7,13 @@ from comments.models import Comment
 
 class PostFactory:
 
-    def list(self, user, profile=0):
-        posts = Post.objects.filter(owner=user)
+    def list(self, user):
+        posts = Post.objects.all()
+        owners = [user]
+        for item in user.follows.all():
+            owners.append(item.followed)
+
+        posts = posts.filter(owner__in=owners)
 
         for post in posts:
             comments = Comment.objects.filter(commented_post=post)
