@@ -25,5 +25,5 @@ class Profile(models.Model):
 
 
 class Follow(models.Model):
-    follower = models.ForeignKey(User, related_name="follows")
-    followed = models.ForeignKey(User, related_name="followed")
+    follower = models.ForeignKey(User, related_name="followed")
+    followed = models.ForeignKey(User, related_name="followers")

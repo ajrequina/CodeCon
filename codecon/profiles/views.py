@@ -125,7 +125,6 @@ def change_cover_photo(request):
         user = User.objects.get(pk=request.user.pk)
 
         form = CoverPhotoForm(request.POST, request.FILES, instance=request.user)
-        print("CHANGE COVER PHOTO")
         if form.is_valid():
             form.save()
             return redirect("posts:list", page_type='profile')
@@ -147,18 +146,12 @@ def follow(request, pk):
     user = User.objects.get(pk=pk)
     owner = request.user
 
-    found = True
 
     try:
         Follow.objects.get(follower=owner, followed=user)
     except Exception as e:
-        found = False
-
-
-    if not found:
         follow = Follow.objects.create(follower=owner, followed=user)
         follow.save()
-
 
     next_url = request.GET.get("next", "")
     return redirect(next_url)
@@ -170,13 +163,11 @@ def unfollow(request, pk):
 
     found = True
     try:
-        Follow.objects.get(follower=owner, followed=user)
-    except Exception as e:
-        found = False
-
-    if found:
         follow = Follow.objects.get(follower=owner, followed=user)
         follow.delete()
+    except Exception as e:
+        print(e)
+
 
     next_url = request.GET.get("next", "")
     return redirect(next_url)

@@ -10,7 +10,6 @@ from posts.models import Post
 
 @login_required
 def add(request, post_id):
-    print(request.POST)
     post = Post.objects.get(pk=post_id)
     content = request.POST.get("content")
     owner = request.user

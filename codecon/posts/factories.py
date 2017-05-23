@@ -7,11 +7,12 @@ from comments.models import Comment
 
 class PostFactory:
 
-    def list(self, user):
+    def list(self, user, page_type):
         posts = Post.objects.all()
         owners = [user]
-        for item in user.follows.all():
-            owners.append(item.followed)
+        if page_type == "stream":
+            for item in user.followed.all():
+                owners.append(item.followed)
 
         posts = posts.filter(owner__in=owners)
 

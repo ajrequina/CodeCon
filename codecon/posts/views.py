@@ -93,9 +93,9 @@ def list(request, page_type='stream', user_id=None):
     user = request.user
     if user_id:
         user = User.objects.get(pk=user_id)
-        posts = post_factory.list(user)
+        posts = post_factory.list(user, page_type)
     else:
-        posts = post_factory.list(user)
+        posts = post_factory.list(user, page_type)
 
     if not user.first_name:
         user.first_name = "CodeCon"
@@ -138,3 +138,4 @@ def like(request, post_id):
 
     next_url = request.GET.get("next", "")
     return redirect(next_url)
+
