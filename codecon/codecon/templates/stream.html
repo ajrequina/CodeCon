@@ -1,4 +1,6 @@
 {% load static %}
+{% load markdownify %}
+
 <div class="postItem">
 	<div class="postOwner">
 		<div class="ownerDP"><img src="{{MEDIA_ROOT}}{{ item.owner.my_profile.profile_photo_url }}"></div>
@@ -14,7 +16,8 @@
 	<div class="postContent">
 		<div class="contentTitle">{{ item.title }}</div>
 		<div class="contentType">{{ item.category }} : {{ item.language }}</div>
-		<div class="contentBody">{{ item.content }}</div>
+
+		<div class="contentBody">{{ item.content | markdownify | safe }}</div>
 	</div>
 </div>
 <div class="postActions">
