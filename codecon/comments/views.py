@@ -7,14 +7,17 @@ from comments.models import Comment
 
 from posts.models import Post
 
+from notifs.utils import notify_owner
+
 
 @login_required
 def add(request, post_id):
-    print(request.POST)
     post = Post.objects.get(pk=post_id)
     content = request.POST.get("content")
     owner = request.user
     Comment.objects.create(content=content, commented_post=post, owner=owner)
+
+    notify_owner(receiver=post.owner, actor=request.user, verb="commented on post", target_object=post, page_type="post")
 
     next_url = request.GET.get("next", "")
     return redirect(next_url)

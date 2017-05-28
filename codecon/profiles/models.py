@@ -23,7 +23,17 @@ class Profile(models.Model):
             return self.cover_photo.url
         return (static('images/cover.png'))
 
+    def __unicode__(self):
+        name = self.owner.first_name + " " + self.owner.last_name
+        ucode = ""
+        if name == " ":
+            ucode = ucode + "@" + self.owner.username
+        else:
+            ucode = ucode + name + " (@" + self.owner.username + ")"
+
+        return ucode
+
 
 class Follow(models.Model):
-    follower = models.ForeignKey(User, related_name="follows")
-    followed = models.ForeignKey(User, related_name="followed")
+    follower = models.ForeignKey(User, related_name="followed")
+    followed = models.ForeignKey(User, related_name="followers")

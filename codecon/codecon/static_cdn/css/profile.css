@@ -1,0 +1,233 @@
+.content{
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	height: auto;
+	margin-top: 45px;
+	min-height: 100%;
+}
+
+.mainPanel{
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+.userPanel{
+	position: relative;
+	width: 100%;
+	height: 215px;
+	overflow: hidden;
+	background-color: white;
+}
+
+.userCover{
+	display: flex;
+	width: 100%;
+	height: 175px;
+	overflow: hidden;
+	align-items: center;
+	background-color: grey;
+}
+
+.covPhoto{
+	width: 100%;
+	height: auto;
+}
+
+.userPhoto{
+	position: absolute;
+	display: block;
+	top: 100px;
+	left: 10px;
+	width: 80px;
+	height: 80px;
+	overflow: hidden;
+	border: 1px solid white;
+	background-color: grey;
+}
+
+.defPhoto{
+	width: 100%;
+	height: auto;
+}
+
+.userName{
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	top: 150px;
+	left: 100px;
+	color: white;
+	font-size: 17.5px; 
+	font-weight: bold;
+	text-shadow: 0 0 3px black;
+}
+
+.userTabs{
+	display: flex;
+	width: 100%;
+	height: 40px;
+	background-color: white;
+	box-sizing: border-box;
+	border: 0.5px solid lightgrey;
+
+	overflow: hidden;
+}
+
+.tabHolder{
+	position: absolute;
+	display: flex;
+	right: 0px;
+	left: 100px;
+	width: auto;
+	height: 40px;
+}
+
+.tabFollow{
+	display: flex;
+	justify-content: center;
+	width: 100px;/*
+	height: 49px;*/
+	background-color: lightgreen;
+}
+
+.followButton{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 90px;
+	height: 20px;
+	color: white;
+	font-family: Roboto , sans-serif;
+	font-size: 0.7em;
+	font-weight: bold;
+	text-decoration: none;
+	margin-top: 12px;
+	border-radius: 20px;
+	background-color: #4dc96b;
+}
+
+.followButton:active {
+	background-color: white;
+	color: #4dc96b;
+}
+
+.tabAction{
+	-webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
+	font-size: 0.7em;
+	font-weight: bold;
+	color: #4dc96b;
+	border-left: 0.5px solid lightgrey;
+}
+
+.tabAction:hover {
+	background-color: #4dc96b;
+	color: white;
+}
+
+@media only screen and (min-width: 400px){
+	.userPanel{
+		height: 225px;
+	}
+
+	.userCover{
+		height: 175px;
+	}
+
+	.userPhoto{
+		top: 90px;
+		left: 15px;
+		width: 100px;
+		height: 100px;
+	}
+
+	.userName{
+		top: 145px;
+		left: 130px;
+		font-size: 20px;
+	}
+
+	.userTabs{
+		height: 50px;
+	}
+
+	.tabFollow{
+		width: 130px;
+	}
+
+	.followButton{
+		width: 100px;
+		height: 20px;
+		font-size: 0.7em;
+		margin-top: 21px;
+	}
+
+	.tabHolder{
+		left: 130px;
+		height: 50px;
+	}
+
+	.tabAction{
+		font-size: 0.8em;
+	}
+}
+
+@media only screen and (min-width: 720px){
+	.mainPanel{
+		width: 650px;
+	}
+
+	.userPanel{
+		height: 355px;
+	}
+
+	.userCover{
+		height: 300px;
+	}
+
+	.userPhoto{
+		top: 150px;
+		left: 20px;
+		width: 160px;
+		height: 160px;
+	}
+
+	.userName{
+		top: 265px;
+		left: 200px;
+		font-size: 25px;
+	}
+
+	.userTabs{
+		height: 55px;
+	}
+
+	.tabFollow{
+		width: 200px;
+	}
+
+	.followButton{
+		width: 160px;
+		height: 25px;
+		font-size: 0.9em;
+		margin-top: 18.5px;
+	}
+
+	.tabHolder{
+		left: 200px;
+		height: 55px;
+	}
+
+	.tabAction{
+		font-size: 1em;
+	}
+}

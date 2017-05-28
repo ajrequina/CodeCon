@@ -16,7 +16,7 @@
     <div class="mainPanel">
       {% for item in posts %}
          <div style="background-color: red;">
-           {{ item.title }} <br>
+           <a href="{% url 'posts:detail' pk=item.pk %}">{{ item.title }}</a> <br>
            {{ item.category }} : {{ item.language }} <br>
             {{ item.content | truncatechars:255}}
          </div> <br>
