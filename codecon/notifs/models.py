@@ -8,7 +8,7 @@ class Notification(models.Model):
     receiver = models.ForeignKey(User, related_name="notifs")
     description = models.TextField(default="")
     read_date = models.DateTimeField(null=True, blank=True)
-    target_pk = models.IntegerField(default=0)
+    target_link = models.CharField(max_length=100, default="")
     page_type = models.CharField(max_length=200)
     create_date = models.DateTimeField(auto_now=True)
     actor = models.ForeignKey(User)
