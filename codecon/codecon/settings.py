@@ -43,8 +43,7 @@ INSTALLED_APPS = [
     'profiles',
     'comments',
     'search',
-    'django_cleanup',
-    'markdownify',
+    'notifs',
 ]
 
 MIDDLEWARE = [
@@ -154,5 +153,8 @@ MARKDOWNIFY_WHITELIST_TAGS = [
 'ul',
 'h2',
 'img',
-'href',
 ]
+
+# NOTIFICATIONS_USE_JSONFIELD=True
+
+# NOTIFICATIONS_SOFT_DELETE=True

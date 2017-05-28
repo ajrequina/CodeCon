@@ -1,6 +1,7 @@
 {% load static %}
 {% load markdownify %}
 
+
 <div class="postItem">
 	<div class="postOwner">
 		<div class="ownerDP"><img src="{{MEDIA_ROOT}}{{ item.owner.my_profile.profile_photo_url }}"></div>
@@ -14,7 +15,7 @@
 		<div class="starButton"><img src="{% static 'images/star.png' %}"></div>
 	</div>
 	<div class="postContent">
-		<div class="contentTitle">{{ item.title }}</div>
+		<div class="contentTitle"><a href="{% url 'posts:detail' pk=item.pk %}">{{ item.title }}</a></div>
 		<div class="contentType">{{ item.category }} : {{ item.language }}</div>
 
 		<div class="contentBody">{{ item.content | markdownify | safe }}</div>
