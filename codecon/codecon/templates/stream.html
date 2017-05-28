@@ -1,6 +1,4 @@
 {% load static %}
-{% load markdownify %}
-
 
 <div class="postItem">
 	<div class="postOwner">
@@ -18,7 +16,7 @@
 		<div class="contentTitle"><a href="{% url 'posts:detail' pk=item.pk %}">{{ item.title }}</a></div>
 		<div class="contentType">{{ item.category }} : {{ item.language }}</div>
 
-		<div class="contentBody">{{ item.content | markdownify | safe }}</div>
+		<div class="contentBody">{{ item.content | safe }}</div>
 	</div>
 </div>
 <div class="postActions">
