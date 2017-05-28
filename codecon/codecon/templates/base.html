@@ -24,7 +24,7 @@
 		<form method="post" action="{% url 'query:results' %}">
 			{% csrf_token %}
 				<a class="home" href="{% url 'posts:list' page_type='stream' %}">CODECON</a></h1>
-				<input type="search" name="query" value="{{ query }}">
+				<input type="search" name="query" value="{{ query }}" id="query">
 				<button type="submit">Search</button>
 		</form>
 		

@@ -1,0 +1,7 @@
+<ul>
+  {% for notif in notifs %}
+    <li>
+        <a href="{% url 'notifs:notif_link' pk=notif.pk %}">{{ notif.description }}</a>
+    </li>
+  {% endfor %}    
+</ul>

@@ -1,0 +1,21 @@
+{% if users.count > 0 or posts.count > 0 %}
+{% for item in users %}
+   <div style="background-color: blue;">
+     <a href="{% url 'posts:list' page_type='profile' user_id=item.pk%}">
+        {{ item.first_name }} {{ item.last_name }} <br>
+        @{{ item.username }} <br>
+        {{ item.email }}
+     </a>
+   </div> <br>
+{% endfor %}
+{% for item in posts %}
+   <div style="background-color: red;">
+     <a href="{% url 'posts:detail' pk=item.pk %}">{{ item.title }}</a> <br>
+     {{ item.category }} : {{ item.language }} <br>
+      {{ item.content | truncatechars:255}}
+   </div> <br>
+{% endfor %}
+<br>
+{% else %}
+  <h2>Post or User Not Found.</h2>
+{% endif %}
