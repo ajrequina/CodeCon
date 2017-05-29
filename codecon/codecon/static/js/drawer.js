@@ -4,6 +4,7 @@ $(document).ready(function(){
 
 	$(".postButton").click(function(){
 		height = $("body").height() - $(".navbar").height() - $(".buttonSpan").height();
+		// height = height - 70;
 		$(".postPanel").css("height",  height);
 		$(".postPanel").css("max-height",  height);
 		$('.postPanel').slideToggle("slow");

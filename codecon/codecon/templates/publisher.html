@@ -1,12 +1,13 @@
-<div id="style-4" class="postPanel">
-	 <div class="dummyPanel">
-	 	<a href="{% url 'accounts:logout' %}">Logout</a>
-		<a href="{% url 'posts:list' page_type='profile'%}">Profile</a>
-		<a href="{% url 'profiles:setting' %}">Settings</a>
-		
+<div class="postPanel">
+	<div class="publisher">		
 		<form method="post" action="{% url 'posts:add' %}?next={{request.path}}">
 			{% csrf_token %}
-			<input type="text" name="title" placeholder="Post Title"><br>
+			<header>Publish Post</header>
+			<hr style="width: 100%;">
+			<br>
+			<span>Enter Title: </span>
+			<input type="text" name="title" placeholder="Enter Title Here"><br>
+			<span>Choose Category: </span>
 			<select name="category">
 				<option value="Algorithm Analysis">Algorithm Analysis</option>
 				<option value="Language Theory">Language Theory</option>
@@ -16,6 +17,7 @@
 				<option value="Data Structures">Data Structures</option>
 				<option value="General Programming" selected="selected">General Programming</option>
 			</select><br>
+			<span>Choose Language: </span>
 			<select name="language">
 				<option value="Python">Python</option>
 				<option value="Java">Java</option>
@@ -25,8 +27,50 @@
 				<option value="Assembly">Assembly</option>
 				<option value="Javascript" >Javascript</option>
 			</select><br>
+			<span>Write Content: </span>
 			<textarea name="content" placeholder="Content"></textarea><br>
-			<button type="submit">POST</button>
+			<button class="publishButton" href="#navbar" type="submit" style="background: salmon">Publish Content</button>
 		</form>
-	 </div>
+	</div>
+	<!-- <div class="publisher" style="position: relative;">
+		<header>Publish Post</header>
+		<form method="post" action="{% url 'posts:add' %}?next={{request.path}}">
+			{% csrf_token %}
+			<div class="input-group">
+				<span>Enter Title: </span>
+				<input type="text" name="title" placeholder="Enter Title Here">
+			</div>
+			<div class="input-group">
+				<span>Choose Category: </span>
+				<select type="text" name="title" placeholder="">
+					<option value="Algorithm Analysis">Algorithm Analysis</option>
+					<option value="Language Theory">Language Theory</option>
+					<option value="Mobile Development">Mobile Development</option>
+					<option value="Web Development">Web Development</option>
+					<option value="Web Security">Web Security</option>
+					<option value="Data Structures">Data Structures</option>
+					<option value="General Programming" selected="selected">General Programming</option>
+				</select>
+			</div>
+			<div class="input-group">
+				<span>Choose Language: </span>
+				<select type="text" name="title" placeholder="">
+					<option value="Python">Python</option>
+					<option value="Java">Java</option>
+					<option value="C++">C++</option>
+					<option value="C#">C#</option>
+					<option value="C" selected="selected">C</option>
+					<option value="Assembly">Assembly</option>
+					<option value="Javascript" >Javascript</option>
+				</select>
+			</div>
+			<div class="input-group">
+				<span>Write Content: </span>
+				<textarea name="content" placeholder="Content"></textarea>
+			</div>
+			<div class="buttonSpan">
+				<a class="publishButton" href="#navbar" type="submit" style="background: salmon">Publish Content</a>
+			</div>
+		</form>
+	</div> -->
 </div>

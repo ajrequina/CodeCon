@@ -30,7 +30,9 @@
 	width: 50px;
 	height: 50px;
 	overflow: hidden;
-	background-color: lightgreen;
+	display: flex;
+	align-items: center;
+	background: white;
 }
 
 .commentDP > img {
@@ -52,6 +54,7 @@
 	display: flex;
 	height: auto;
 	width: auto;
+	padding-left: 3px;
 }
 
 .commentFull{
