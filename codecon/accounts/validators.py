@@ -9,7 +9,7 @@ def check_login_fields(username, password):
         errors.append("Password is required.")
     else:
         if User.objects.filter(username=username).count() <= 0:
-            errors.append("User does not exists.")
+            errors.append("User do not exists.")
 
     return errors
 

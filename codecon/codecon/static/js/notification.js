@@ -3,7 +3,7 @@ function get_notifs(){
     $.ajax({
        type: "GET",
        url: '/notifs/unread/',
-       data: "check",
+       data: "",
        dataType : 'html',
        success: append_notifs
   });

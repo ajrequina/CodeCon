@@ -12,5 +12,6 @@ urlpatterns = [
     url(r'like/(?P<post_id>\d+)/$', views.like, name='like'),
     url(r'(?P<page_type>[a-zA-Z]+)/(?P<user_id>\d+)$', views.list, name='list'),
     url(r'(?P<page_type>[a-zA-Z]+)/$', views.list, name='list'),
+    url(r'top10/$', views.top10, name='top10'),
     url(r'$', views.list, name='list'),
 ]

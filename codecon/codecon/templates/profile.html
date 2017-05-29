@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+
 {% block page_title %}
 	View Post
 {% endblock %}
@@ -68,14 +69,15 @@
 							<span>{{ posts.count }}</span>
 							<span>Published</span>
 						</a>
-						<a class="tabAction" role="button" href="">
-							<span>{{ owner.followers.count 	}}</span>
+						<a class="tabAction" role="button" href="{% url 'profiles:follow_page' pk=owner.pk page_type='followers' %}">
+							<span>{{ owner.followed.count }}</span>
 							<span>Followers</span>
 						</a>
-						<a class="tabAction" role="button" href="">
-							<span>{{ owner.followed.count }}</span>
+						<a class="tabAction" role="button" href="{% url 'profiles:follow_page' pk=owner.pk page_type='following' %}">
+							<span>{{ owner.followers.count }}</span>
 							<span>Following</span>
 						</a>
+						
 					</div>
 				</div>
 			</div>
@@ -87,10 +89,13 @@
 				<a class="postButton" href="#navbar">CREATE CONTENT</a>
 				{% endif %}
 			</div>
+			<h2>TOP 10 WEEKLY POSTS</h2>
+			<div id="top10-list"></div>
+			{% if owner == request.user %}
+				<div id="notifs"></div>
+			{% endif %}
 			{% block stream %}
 				<div class="postStream">
-					<div id="count-div"><h3 id="count-text">You have <b id="notifs-count">0</b> unread notifications.</h3></div>
-					<ul id="notifs"></ul>
 					{% for item in posts %}
 						{% if item.owner == request.user %}
 			   				{% include "stream.html" %}

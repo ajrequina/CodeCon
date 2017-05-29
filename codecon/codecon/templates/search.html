@@ -61,7 +61,6 @@
   {% load static %}
   <div class="content">
     <div class="mainPanel">
-       <div id="search_results"></div>
       <header style="color: green; margin-top: 10px;">Search Results</header>
       <div class="tabBar" style="width: 100%; display: flex; flex-direction: row; margin-bottom: 5px;">
         <button style="display: block; width: 100%; background-color: #4dc96b; color: white; font-size: 4vh; padding-top: 10px; padding-bottom: 10px; border: none; box-shadow: 1px 1px black;" class="tablink" onclick="openCity(event,'postsResults')">POSTS</button>
@@ -118,5 +117,4 @@
   
 {% block javascripts %}
   {% load static %}
-  <script src="{% static 'js/search.js' %}"></script>
 {% endblock %}

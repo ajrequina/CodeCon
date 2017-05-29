@@ -23,14 +23,17 @@ def notify_followers(user, verb, target_object, page_type):
 
 def notify_owner(receiver, actor, verb, target_object, page_type):
     if receiver != actor:
-        description = "@" + actor.username + " " + \
+        if page_type == "post":
+            description = "@" + actor.username + " " + \
                       verb + " " + str(target_object)
+        else:
+            description = "@" + actor.username + " " + verb
 
         link = "#"
         if page_type == "post":
             link = "/post/detail/" + str(target_object.pk) + "/"
         elif page_type == "profile":
-            link = "/post/profile/" + str(target_object.pk) + "/"
+            link = "/post/profile/" + str(target_object.pk)
 
         Notification.objects.create(
             receiver=receiver,

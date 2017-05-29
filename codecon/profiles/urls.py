@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^change-coverpic/$', views.change_cover_photo, name='change_coverpic'),
     url(r'^follow/(?P<pk>\d+)/$', views.follow, name='follow'),
     url(r'^unfollow/(?P<pk>\d+)/$', views.unfollow, name='unfollow'),
+     url(r'^follow_page/(?P<pk>\d+)/(?P<page_type>[a-zA-Z]+)/$', views.follow_page, name='follow_page'),
 ]

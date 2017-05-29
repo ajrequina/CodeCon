@@ -1,25 +1,5 @@
-{% extends 'base.html' %}
-
-
-{% block page_title %}
-  View Post
-{% endblock %}
-
-{% block css %}
-  {% load static %}
-  <link rel="stylesheet" href="{% static 'css/profile.css' %}">
-{% endblock %}
-
-{% block content %}
-  {% load static %}
-  <div class="content">
-    <div class="mainPanel">
-      HEY
-    </div>  
-  </div>
-{% endblock %}
-  
-{% block javascripts %}
-  {% load static %}
-  <script src="{% static 'js/drawer.js' %}"></script>
-{% endblock %}
+<ol>
+  {% for post in top_posts %}
+    <li><a href="{% url 'posts:detail' pk=post.pk %}">{{ post.title }}</a></li>
+  {% endfor %}
+</ol>

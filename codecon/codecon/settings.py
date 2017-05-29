@@ -138,23 +138,3 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "codecon/static"),
 ]
 
-MARKDOWNIFY_WHITELIST_TAGS = [
-'a',
-'abbr',
-'acronym',
-'b',
-'blockquote',
-'em',
-'i',
-'li',
-'ol',
-'p',
-'strong',
-'ul',
-'h2',
-'img',
-]
-
-# NOTIFICATIONS_USE_JSONFIELD=True
-
-# NOTIFICATIONS_SOFT_DELETE=True

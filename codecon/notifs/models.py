@@ -16,3 +16,6 @@ class Notification(models.Model):
 
     class Meta:
         ordering = ['-create_date']
+
+    def __str__(self):
+        return self.description

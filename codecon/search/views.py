@@ -8,19 +8,8 @@ from posts.models import Post
 
 def search_page(request):
     query = request.POST.get("query")
-
     if query is None:
         query = ""
-
-    context = {
-        "query" : query
-    }
-
-    return render(request, 'search.html', context=context)
-
-
-def search_results(request):
-    query = request.GET.get("query")
 
 
     users = User.objects.all()
@@ -37,11 +26,9 @@ def search_results(request):
     users = users.filter(q1)
     posts = posts.filter(q2)
 
-    if query is None:
-        query = ""
     context = {
         "query" : query,
         "users" : users,
         "posts" : posts
     }
-    return render(request, 'results.html', context=context)
+    return render(request, 'search.html', context=context)

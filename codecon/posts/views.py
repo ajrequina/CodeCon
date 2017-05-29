@@ -9,9 +9,10 @@ from django.contrib.auth.models import User
 from posts.models import Post, Like
 from posts.factories import post_factory
 from posts.forms import PostForm
+
 from comments.models import Comment
+
 from profiles.models import Follow
-from notifs.utils import notify_followers, notify_owner
 
 
 @login_required
@@ -24,7 +25,6 @@ def add(request):
             post.owner = request.user
             post.date_created = date_created=datetime.datetime.now()
             post.save()
-            notify_followers(user=request.user, verb="added new post", target_object=post, page_type="post")
 
     next_url = request.GET.get("next", "")
     return redirect(next_url)
@@ -33,7 +33,7 @@ def add(request):
 @login_required
 def update(request, pk):
     if request.method == "POST":
-        post = Post.objects.get(pk=pk)
+        post = get_object_or_404(Post, pk=pk)
         form = PostForm(request.POST)
 
         if form.is_valid():
@@ -47,7 +47,7 @@ def update(request, pk):
         return redirect("posts:detail", pk=pk)
 
     elif request.method == "GET":
-        post = Post.objects.get(pk=pk)
+        post = get_object_or_404(Post, pk=pk)
         context = {
             "post" : post
         }
@@ -56,23 +56,16 @@ def update(request, pk):
 
 @login_required
 def delete(request, pk):
-
-    instance = None
-    try:
-
-        instance = Post.objects.get(pk=pk)
-    except Exception as e:
-        pass
-
-    if instance:
+    if request.method == "GET":
+        instance = get_object_or_404(Post, pk=pk)
         instance.delete()
 
-    return redirect("posts:list", page_type='profile')
+    return HttpResponseRedirect(request.path)
 
 
 @login_required
 def detail(request, pk):
-    post = Post.objects.get(pk=pk)
+    post = get_object_or_404(Post, pk=pk)
     comments = Comment.objects.filter(commented_post=post)
     for item in comments:
         if item.owner == request.user:
@@ -95,15 +88,14 @@ def detail(request, pk):
     return render(request, 'post.html', context=context)
 
 
-
 @login_required
 def list(request, page_type='stream', user_id=None):
     user = request.user
     if user_id:
-        user = User.objects.get(pk=user_id)
-        posts = post_factory.list(user, page_type)
+        user = get_object_or_404(User, pk=user_id)
+        posts = post_factory.list(user, "profile")
     else:
-        posts = post_factory.list(user, page_type)
+        posts = post_factory.list(user, "stream")
 
     if not user.first_name:
         user.first_name = "CodeCon"
@@ -137,13 +129,30 @@ def list(request, page_type='stream', user_id=None):
 
 @login_required
 def like(request, post_id):
-    post = Post.objects.get(pk=post_id)
-    try:
+    post = get_object_or_404(Post, pk=post_id)
+    if len(Like.objects.filter(liker=request.user, liked_post=post)) == 0:
+        Like.objects.create(liker=request.user, liked_post=post)
+    else:
         instance = Like.objects.get(liker=request.user, liked_post=post)
         instance.delete()
-    except Exception as e:
-         Like.objects.create(liker=request.user, liked_post=post)
-         notify_owner(receiver=post.owner, actor=request.user, verb="liked post", target_object=post, page_type="post")
 
     next_url = request.GET.get("next", "")
     return redirect(next_url)
+
+
+@login_required
+def top10(request):
+    posts = []
+    num = 10
+    curr_week = datetime.datetime.now().isocalendar()[1]
+    while num > 0 and Post.objects.all().count() > 0:
+        for post in Post.objects.all():
+            post_week = post.date_created.date().isocalendar()[1]
+            if post_week == curr_week:
+                if len(posts) < 10:
+                    posts.append(post)
+        curr_week -= 1
+        num = 10 - len(posts)
+
+    posts = sorted(posts, key=lambda t: t.get_score, reverse=True)
+    return render(request, 'top10.html', {"top_posts" : posts})

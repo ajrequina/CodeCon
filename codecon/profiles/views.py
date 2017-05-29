@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -8,6 +8,8 @@ from django.db.models import Q
 
 from profiles.forms import ProfilePhotoForm, CoverPhotoForm, ProfileForm
 from profiles.models import Follow
+
+from notifs.utils import notify_followers, notify_owner
 
 
 @login_required
@@ -125,6 +127,7 @@ def change_cover_photo(request):
         user = User.objects.get(pk=request.user.pk)
 
         form = CoverPhotoForm(request.POST, request.FILES, instance=request.user)
+        print("CHANGE COVER PHOTO")
         if form.is_valid():
             form.save()
             return redirect("posts:list", page_type='profile')
@@ -143,31 +146,54 @@ def change_profile_photos(request, pk):
 
 
 def follow(request, pk):
-    user = User.objects.get(pk=pk)
+    user = get_object_or_404(User, pk=pk)
     owner = request.user
 
+    found = True
 
     try:
         Follow.objects.get(follower=owner, followed=user)
     except Exception as e:
+        found = False
+
+
+    if not found:
         follow = Follow.objects.create(follower=owner, followed=user)
         follow.save()
+        notify_owner(receiver=user, actor=owner, verb="followed you", target_object=owner, page_type="profile")
+
 
     next_url = request.GET.get("next", "")
     return redirect(next_url)
 
 
 def unfollow(request, pk):
-    user = User.objects.get(pk=pk)
+    user = get_object_or_404(User, pk=pk)
     owner = request.user
 
     found = True
     try:
+        Follow.objects.get(follower=owner, followed=user)
+    except Exception as e:
+        found = False
+
+    if found:
         follow = Follow.objects.get(follower=owner, followed=user)
         follow.delete()
-    except Exception as e:
-        print(e)
+        notify_owner(receiver=user, actor=owner, verb="unfollowed you", target_object=owner, page_type="profile")
 
 
     next_url = request.GET.get("next", "")
     return redirect(next_url)
+
+
+def follow_page(request, pk, page_type="following"):
+    data = []
+    user = get_object_or_404(User, pk=pk)
+
+    if page_type == "followers":
+        data = user.followed.all()
+    elif page_type == "following":
+        data = user.followers.all()
+
+    return render(request, "follow.html", {"follows" : data, "type" : page_type})

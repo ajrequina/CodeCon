@@ -43,14 +43,19 @@ class Post(models.Model):
     def __unicode__(self):
         return self.title
 
+    @property
+    def get_score(self):
+        num_likes = self.likes.all().count()
+        num_comments = self.comments.all().count()
+        return num_likes + num_comments
 
 class Like(models.Model):
     liker = models.ForeignKey(User)
     like_date = models.DateTimeField(auto_now=True)
-    liked_post = models.OneToOneField(Post, related_name="likes")
+    liked_post = models.ForeignKey(Post, related_name="likes")
 
     def __unicode__(self):
-        return self.liker
+        return self.liker.username
 
 
 class FileUpload(models.Model):

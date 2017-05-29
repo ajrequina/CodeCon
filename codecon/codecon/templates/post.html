@@ -9,9 +9,11 @@
 	<link rel="stylesheet" href="{% static 'css/post.css' %}">
 {% endblock %}
 
-
-
 {% block content %}
+	<a href="{% url 'accounts:logout' %}">Logout</a>
+	<a href="{% url 'posts:list' page_type='stream' %}">Home</a>
+	<a href="{% url 'posts:list' page_type='profile' %}">All Posts</a>
+	<hr>
 		<div>
 			<h1>{{ post.title }}</h1> 
 			{{ post.date_created }} <br>
@@ -22,7 +24,7 @@
 				<a href="{% url 'posts:delete' pk=post.pk %}">Delete</a>
 			{% endif %}
 			
-			<a href="{% url 'posts:like' post_id=post.pk %}">Like</a>
+			<a href="{% url 'posts:like' post_id=post.pk %}?next={{request.path}}">Like</a>
 			{{ post.all_likes.count }}
 
 			{% for like in post.all_likes %}

@@ -17,14 +17,16 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic import TemplateView
+from accounts import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^post/', include('posts.urls', namespace='posts')),
     url(r'^profile/', include('profiles.urls', namespace='profiles')),
     url(r'^comment/', include('comments.urls', namespace="comments")),
-    url(r'^search/', include('search.urls', namespace='query')),
-    url(r'^notifs/', include('notifs.urls', namespace='notifs')),
+    url(r'search/', include('search.urls', namespace='query')),
+    url(r'notifs/', include('notifs.urls', namespace='notifs')),
     url(r'^', include('accounts.urls', namespace="accounts")),
 ]
 
