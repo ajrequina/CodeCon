@@ -16,18 +16,52 @@
 	<div class="content">
 		<div class="mainPanel">
 			<div id="userPanel" class="userPanel">
-				<div class="userCover"><img class="covPhoto" src="{{MEDIA_ROOT}}{{ owner.my_profile.cover_photo_url }}"></div>
-				<div class="userPhoto"><img class="defPhoto" src="{{MEDIA_ROOT}}{{ owner.my_profile.profile_photo_url }}"></div>
+				<div class="userCover">
+					<img class="covPhoto" src="{{MEDIA_ROOT}}{{ owner.my_profile.cover_photo_url }}">
+					<img class="tempCover" src="">
+					{% if is_owned %}
+					<form method="post" enctype="multipart/form-data" action="{% url 'profiles:change_coverpic' %}">
+			          	{% csrf_token %}
+			          	<div id="changeTextCVR">Change Cover Photo<br></div>
+          				<input  id="inputCVR" type="file" name="cover_photo">
+          				<button id="upCVRbutton" type="submit">Upload</button>
+			        </form>
+			        {% endif %}
+					<!-- <form method="post" enctype="multipart/form-data" action="{% url 'profiles:change_coverpic' %}">
+          				{% csrf_token %}
+          				<div id="changeTextCVR">Change Cover Photo<br></div>
+          				<input  id="inputCVR" type="file" name="profile_photo">
+          				<button id="upCVRbutton" type="submit">Upload</button>
+          			</form> -->
+          			<button id="upCVRcancel" onclick="hideCVR()">Cancel</button>
+				</div>
 				<div class="userName"><span>{{ owner.first_name }} {{ owner.last_name }}</span></div>
 				<div class="userTabs">
 					<div class="tabFollow">
-					{% if not is_owned %}
-						{% if not is_followed %}
-							<a class="followButton" role="button" href="{% url 'profiles:follow' pk=owner.pk %}?next={{request.path}}">FOLLOW</a>
-						{%  else %}
-							<a class="followButton" role="button" href="{% url 'profiles:unfollow' pk=owner.pk %}?next={{request.path}}">UNFOLLOW</a>
-						{% endif %}
-					{% endif %}
+						<div class="id-group">
+							<div class="photoGroup">
+								<div class="userPhoto">
+									<img class="defPhoto" src="{{MEDIA_ROOT}}{{ owner.my_profile.profile_photo_url }}">
+									<img class="tempPhoto" src="">
+									{% if is_owned %}
+									<form method="post" enctype="multipart/form-data" action="{% url 'profiles:change_profpic' %}">
+										{% csrf_token %}
+										<input  id="inputIMG" type="file" name="profile_photo">
+										<div id="changeText">Change<br>Default<br>Photo<br></div>
+										<button id="upButton" type="submit">Upload</button>
+									</form>
+									{% endif %}
+									<button id="upCancel" onclick="hide()">Cancel</button>
+								</div>
+							</div>
+							{% if not is_owned %}
+								{% if not is_followed %}
+									<a class="followButton" role="button" href="{% url 'profiles:follow' pk=owner.pk %}?next={{request.path}}">FOLLOW</a>
+								{%  else %}
+									<a class="followButton" role="button" href="{% url 'profiles:unfollow' pk=owner.pk %}?next={{request.path}}">UNFOLLOW</a>
+								{% endif %}
+							{% endif %}
+						</div>
 					</div>
 					<div class="tabHolder">
 						<a class="tabAction" role="button" href="">
@@ -58,8 +92,10 @@
 					<div id="count-div"><h3 id="count-text">You have <b id="notifs-count">0</b> unread notifications.</h3></div>
 					<ul id="notifs"></ul>
 					{% for item in posts %}
-			   			{% include "stream.html" %}
-			   	{% endfor %}
+						{% if item.owner == request.user %}
+			   				{% include "stream.html" %}
+						{% endif %}
+			   		{% endfor %}
 				</div>
 			{% endblock %}
 		</div>	
@@ -69,4 +105,76 @@
 {% block javascripts %}
 	{% load static %}
 	<script src="{% static 'js/drawer.js' %}"></script>
+	<script type="text/javascript">
+		// function doThis(){
+		// 	$("#upButton").css("display", "block")
+		// }
+		function hide() {
+			$("#upButton").css("display", "none");
+	        $("#upCancel").css("display", "none");
+	        $('.tempPhoto').attr('src', "");
+	        $(".tempPhoto").css("display", "none");
+		}
+
+		function hideCVR() {
+			$("#upCVRbutton").css("display", "none");
+	        $("#upCVRcancel").css("display", "none");
+	        $('.tempCover').attr('src', "");
+	        $(".tempCover").css("display", "none");
+		}
+
+		$("#inputIMG, #upButton, #changeText").hover(function(){
+	        // $("#upButton").css("display", "block");
+	        $("#changeText").css("display", "flex");
+	    }, function(){
+	        // $("#upButton").css("display", "none");
+	        $("#changeText").css("display", "none");
+	    });
+
+	    $("#inputCVR, #changeTextCVR").hover(function(){
+	        // $("#upButton").css("display", "block");
+	        $("#changeTextCVR").css("display", "flex");
+	    }, function(){
+	        // $("#upButton").css("display", "none");
+	        $("#changeTextCVR").css("display", "none");
+	    });
+
+		function readURL(input) {
+	        if (input.files && input.files[0]) {
+	            var reader = new FileReader();
+	           
+	            reader.onload = function (e) {
+	            	$(".tempPhoto").css("display", "block");
+	                $('.tempPhoto').attr('src', e.target.result);
+	                $("#upButton").css("display", "flex");
+	                $("#upCancel").css("display", "block");
+	            }
+	            
+	            reader.readAsDataURL(input.files[0]);
+	        }
+	    }
+	    
+	    $("#inputIMG").change(function(){
+	        readURL(this);
+	    });
+
+	    function readURLtoCover(input) {
+	        if (input.files && input.files[0]) {
+	            var reader = new FileReader();
+	            
+	            reader.onload = function (e) {
+	            	$(".tempCover").css("display", "block");
+	                $('.tempCover').attr('src', e.target.result);
+	                $("#upCVRbutton").css("display", "flex");
+	                $("#upCVRcancel").css("display", "block");
+	            }
+	            
+	            reader.readAsDataURL(input.files[0]);
+	        }
+	    }
+
+	    $("#inputCVR").change(function(){
+	        readURLtoCover(this);
+	    });
+	</script>
 {% endblock %}

@@ -7,7 +7,54 @@
 
 {% block css %}
   {% load static %}
+  <link rel="stylesheet" href="{% static 'css/stream.css' %}">
+  <link rel="stylesheet" href="{% static 'css/comment.css' %}">
   <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+  <style type="text/css">
+    .profileItem{
+      background-color: lightgrey;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding-bottom: 15px;
+    }
+
+    .profFrame{
+      margin: 15px;
+      display: flex;
+      justify-content: center;
+      width: 100px;
+      height: 100px;
+      border: 3px solid white;
+    }
+
+    .profFrame>img{
+      width: 100%;
+      height: auto;
+      background-color: white;
+    }
+
+    .profileItem>a{
+      color: green;
+      display: block;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .profileItem>a>p{
+      text-align: center;
+      margin: 0px;
+    }
+
+    .profileItem>a:hover{
+      color: crimson;
+      text-decoration: underline;
+    }
+  </style>
 {% endblock %}
 
 {% block content %}
@@ -15,8 +62,58 @@
   <div class="content">
     <div class="mainPanel">
        <div id="search_results"></div>
+      <header style="color: green; margin-top: 10px;">Search Results</header>
+      <div class="tabBar" style="width: 100%; display: flex; flex-direction: row; margin-bottom: 5px;">
+        <button style="display: block; width: 100%; background-color: #4dc96b; color: white; font-size: 4vh; padding-top: 10px; padding-bottom: 10px; border: none; box-shadow: 1px 1px black;" class="tablink" onclick="openCity(event,'postsResults')">POSTS</button>
+        <button style="display: block; width: 100%; background: white; color: #4dc96b; font-size: 4vh; padding-top: 10px; padding-bottom: 10px; border: none; box-shadow: 1px 1px black;" class="tablink" onclick="openCity(event,'usersResults')">USERS</button>
+      </div>
+
+      <div id="postsResults" class="resultPanel">
+        {% block stream %}
+          <div class="postStream">
+            {% for item in posts %}
+                {% include "stream.html" %}
+              {% endfor %}
+          </div>
+        {% endblock %}
+      </div>
+
+      <div id="usersResults" class="resultPanel" style="display:none">
+        {% for item in users %}
+         <div class="profileItem" style="">
+         <div class="profFrame">
+           <img class="profPhoto" src="{{MEDIA_ROOT}}{{ item.owner.my_profile.profile_photo_url }}">
+         </div>
+         
+          <a href="{% url 'posts:list' page_type='profile' user_id=item.pk%}">
+                <p>{{ item.first_name }} {{ item.last_name }}</p>
+                <p>@{{ item.username }}</p>
+                <p>{{ item.email }}</p>              
+           </a>
+         </div> <br>
+        {% endfor %}
+      </div>
+      <br>
     </div>  
   </div>
+
+  <script>
+    function openCity(evt, cityName) {
+      var i, x, tablinks;
+      x = document.getElementsByClassName("resultPanel");
+      for (i = 0; i < x.length; i++) {
+          x[i].style.display = "none";
+      }
+      // tablinks = document.getElementsByClassName("tablink");
+      // for (i = 0; i < x.length; i++) {
+      //     x[i].style.backgroundcolor = "white";
+      //     x[i].style.color = "#4dc96b";
+      // }
+      document.getElementById(cityName).style.display = "block";
+      // evt.currentTarget.className.style.color = "white";
+      // evt.currentTarget.className.style.backgroundcolor = "#4dc96b";
+    }
+  </script>
 {% endblock %}
   
 {% block javascripts %}

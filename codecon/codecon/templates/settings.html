@@ -5,65 +5,77 @@
 {% endblock %}
 
 {% block css %}
-  {% load static %}
+  {% load static %}<!-- 
+    <link rel="stylesheet" href="{% static 'css/settings.css' %}"> -->
     <link rel="stylesheet" href="{% static 'css/profile.css' %}">
-    <link rel="stylesheet" href="{% static 'css/stream.css' %}">
-    <link rel="stylesheet" href="{% static 'css/comment.css' %}">
+    <link rel="stylesheet" href="{% static 'css/account.css' %}">
 {% endblock %}
 
 {% block content %}
     <div class="content">
-      <a href="{% url 'posts:list' page_type='stream' %}">Home</a>
-      <h1>Update Information</h1>
-      <form method="post" action="{% url 'profiles:change_info' %}">
-        {% csrf_token %}
-        <br><input type="text" name="first_name" placeholder="Firstname" value="{{ user.first_name }}"><br>
-        <input type="text" name="last_name" placeholder="Lastname" value="{{ user.last_name }}"><br>
-        <button type="submit" value="submit">Update Info</button>
-        <br>
-        {% for item in info_errors %}
-          {{ item }} <br>
-        {% endfor %}
-      </form>
-      <br>
-      <h1>Update Credentials</h1>
-      <form method="post" action="{% url 'profiles:change_credentials' %}">
-        {% csrf_token %}
-        <br><input type="text" name="username" id="username" placeholder="Username" value="{{ user.username }}"><br>
-        <input type="email" name="email" id="email" placeholder="Email" value="{{ user.email }}"><br>
-        <button type="submit">Update Credentials</button><br>
-        {% for item in credential_errors %}
-          {{ item }} <br>
-        {% endfor %}
-      </form>
-      <h1>Change Password</h1>
-      <form method="post" action="{% url 'profiles:change_password' %}">
-        {% csrf_token %}
-        <br>
-       
-        <input type="password" name="new_password1" id="new_password" placeholder="New Password"><br>
-         <input type="password" name="new_password2" id="new_password" placeholder="Confirm New Password"><br>
-        <input type="password" name="old_password" id="new_password" placeholder="Old Password"><br>
-        <button type="submit">Update Password</button><br>
-        {% for item in password_errors %}
-          {{ item }} <br>
-        {% endfor %}
-      </form>
+      <div class="mainPanel" >
+        <div class="form signin rounded" style="background-color: #4dc96b; border-radius: 10px;">
+          <h1 style="color: white;">EDIT PROFILE</h1>
+        </div>
+        <div class="form signin rounded" style="padding-top: 20px; padding-bottom: 20px; border-radius: 10px;">
+          <label style="font-weight: bold; font-size: 3vh;">Personal Information</label>
+          <form method="post" action="{% url 'profiles:change_info' %}">
+            {% csrf_token %}
+            <br><input type="text" name="first_name" placeholder="Firstname" value="{{ user.first_name }}"><br>
+            <input type="text" name="last_name" placeholder="Lastname" value="{{ user.last_name }}"><br>
+            <button type="submit" class="confirm" value="submit">Update Info</button>
+            <br>
+            {% for item in info_errors %}
+              {{ item }} <br>
+            {% endfor %}
+          </form>
+        </div>
 
-      <h1>Change Profile Photo</h1>
-      <form method="post" enctype="multipart/form-data" action="{% url 'profiles:change_profpic' %}">
-        {% csrf_token %}
-        <input type="file" name="profile_photo">
-        <button type="submit">Upload</button>
-      </form>
+        <div class="form signin rounded" style="padding-top: 20px; padding-bottom: 20px; border-radius: 10px;">
+          <label style="font-weight: bold; font-size: 3vh;">Personal Information</label>
+          <form method="post" action="{% url 'profiles:change_credentials' %}">
+            {% csrf_token %}
+            <br><input type="text" name="username" id="username" placeholder="Username" value="{{ user.username }}"><br>
+            <input type="email" name="email" id="email" placeholder="Email" value="{{ user.email }}"><br>
+            <button class="confirm" type="submit">Update Credentials</button><br>
+            {% for item in credential_errors %}
+              {{ item }} <br>
+            {% endfor %}
+          </form>
+        </div>
 
-      <h1>Change Cover Photo</h1>
-      <form method="post" enctype="multipart/form-data" action="{% url 'profiles:change_coverpic' %}">
-        {% csrf_token %}
-        <input type="file" name="cover_photo">
-        <button type="submit">Upload</button>
-      </form>
+        <div class="form signin rounded" style="padding-top: 20px; padding-bottom: 20px; border-radius: 10px;">
+          <label style="font-weight: bold; font-size: 3vh;">Credentials</label>
+          <form method="post" action="{% url 'profiles:change_password' %}">
+            {% csrf_token %}
+            <br>
+           
+            <input type="password" name="new_password1" id="new_password" placeholder="New Password"><br>
+             <input type="password" name="new_password2" id="new_password" placeholder="Confirm New Password"><br>
+            <input type="password" name="old_password" id="new_password" placeholder="Old Password"><br>
+            <button class="confirm" type="submit">Update Password</button><br>
+            {% for item in password_errors %}
+              {{ item }} <br>
+            {% endfor %}
+          </form>
+        </div>
     </div>
+
+    <script>
+      function openCity(evt, cityName) {
+        var i, x, tablinks;
+        x = document.getElementsByClassName("city");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablink");
+        for (i = 0; i < x.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" w3-red", "");
+        }
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " w3-red";
+      }
+    </script>
     
 {% endblock %}
 
