@@ -38,7 +38,6 @@ def update(request, pk):
     if request.method == "POST":
         post = get_object_or_404(Post, pk=pk)
         form = PostForm(request.POST)
-
         if form.is_valid():
             data = form.cleaned_data
             post.title = data['title']
@@ -46,6 +45,7 @@ def update(request, pk):
             post.language = data['language']
             post.category = data['category']
             post.save()
+            print(repr(post))
 
         return redirect("posts:detail", pk=pk)
 
@@ -63,8 +63,8 @@ def delete(request, pk):
         instance = get_object_or_404(Post, pk=pk)
         instance.delete()
 
-    return HttpResponseRedirect(request.path)
-
+    next_url = request.GET.get("next") 
+    return redirect(next_url)
 
 @login_required
 def detail(request, pk):
@@ -123,6 +123,7 @@ def list(request, page_type='stream', user_id=None):
         "posts" : posts,
         "owner" : user,
         "is_owned" : is_owned,
+        "owner" : request.user,
         "is_followed" : is_followed
     }
 

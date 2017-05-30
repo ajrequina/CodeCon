@@ -6,35 +6,51 @@
 
 {% block css %}
 	{% load static %}
+	<link rel="stylesheet" href="{% static 'css/stream.css' %}">
+	<link rel="stylesheet" href="{% static 'css/comment.css' %}">
+	<link rel="stylesheet" href="{% static 'css/home.css' %}">
 {% endblock %}
 
 {% block content %}
-	<a href="{% url 'accounts:logout' %}">Logout</a>
-	<a href="{% url 'posts:list' page_type='stream'%}">Home</a>
-	<form method="post" action="{% url 'posts:update' pk=post.pk %}">
-		{% csrf_token %}
-		<input type="text" name="post_title" placeholder="Post Title" value="{{ post.title }}"><br>
-		<select name="post_category" value="{{ post.category }}">
-		  <option value="Algorithm Analysis">Algorithm Analysis</option>
-		  <option value="Language Theory">Language Theory</option>
-		  <option value="Mobile Development">Mobile Development</option>
-		  <option value="Web Development">Web Development</option>
-		  <option value="Web Security">Web Security</option>
-		  <option value="Data Structures">Data Structures</option>
-		  <option value="General Programming">General Programming</option>
-		</select><br>
-		<select name="post_language" value="{{ post.language }}">
-		  <option value="Python">Python</option>
-		  <option value="Java">Java</option>
-		  <option value="C++">C++</option>
-		  <option value="C#">C#</option>
-		  <option value="C">C</option>
-		  <option value="Assembly">Assembly</option>
-		  <option value="Javascript" >Javascript</option>
-		</select><br>
-		<textarea name="post_content" placeholder="Content">{{ post.content }}</textarea><br>
-		<button type="submit">POST</button>
-	</form>
+	<div class="content">
+		<div class="mainPanel">
+			<div class="postPanel" style="display: flex;">
+				<div class="publisher" >		
+					<form method="post" action="{% url 'posts:update' pk=post.pk %}">
+						{% csrf_token %}
+						<header>Publish Post</header>
+						<hr style="width: 100%;">
+						<br>
+						<span>Enter Title: </span>
+						<input type="text" name="title" placeholder="Post Title" value="{{ post.title }}"><br>
+						<span>Choose Category: </span>
+						<select name="category" value="{{ post.category }}">
+							<option value="Algorithm Analysis">Algorithm Analysis</option>
+							<option value="Language Theory">Language Theory</option>
+							<option value="Mobile Development">Mobile Development</option>
+							<option value="Web Development">Web Development</option>
+							<option value="Web Security">Web Security</option>
+							<option value="Data Structures">Data Structures</option>
+							<option value="General Programming" selected="selected">General Programming</option>
+						</select><br>
+						<span>Choose Language: </span>
+						<select name="language" value="{{ post.language }}">
+							<option value="Python">Python</option>
+							<option value="Java">Java</option>
+							<option value="C++">C++</option>
+							<option value="C#">C#</option>
+							<option value="C" selected="selected">C</option>
+							<option value="Assembly">Assembly</option>
+							<option value="Javascript" >Javascript</option>
+						</select><br>
+						<span>Write Content: </span>
+						<textarea name="content" placeholder="Content">{{ post.content }}</textarea><br>
+						<button class="publishButton"  type="submit" style="background: salmon">Publish Content</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}
 
 {% block javascripts %}
