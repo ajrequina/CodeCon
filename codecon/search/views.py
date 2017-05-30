@@ -3,6 +3,8 @@ from django.db.models import Q
 from django.contrib.auth.models import User
 
 from posts.models import Post
+import markdown
+from mdx_gfm import GithubFlavoredMarkdownExtension
 
 
 
@@ -26,6 +28,9 @@ def search_page(request):
     users = users.filter(q1)
     posts = posts.filter(q2)
 
+    for post in posts:
+        post.content =  markdown.markdown(post.content,
+                         extensions=[GithubFlavoredMarkdownExtension()])
     context = {
         "query" : query,
         "users" : users,
