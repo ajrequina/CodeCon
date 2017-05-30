@@ -30,7 +30,7 @@
 				  <div id="myDropdown" class="dropdown-content">
 				  	<form method="post" action="{% url 'query:results' %}">
 				  		{% csrf_token %}
-				    	<input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+				    	<input type="text" name="query" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
 				    </form>
 				    <a href="{% url 'posts:list' page_type='stream' %}">Home</a>
 				    <a href="{% url 'posts:list' page_type='profile'%}">Profile</a>
