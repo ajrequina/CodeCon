@@ -65,15 +65,15 @@
 						</div>
 					</div>
 					<div class="tabHolder">
-						<a class="tabAction" role="button" href="#posts" onclick="changeTab(event, 'posts')">
+						<a class="tabAction" role="button" onclick="changeTab(event, 'posts')">
 							<span>{{ posts.count }}</span>
 							<span>Published</span>
 						</a>
-						<a class="tabAction" role="button" href="#followers" onclick="changeTab(event, 'followers')">
+						<a class="tabAction" role="button" onclick="changeTab(event, 'followers')">
 							<span>{{ owner.followed.count }}</span>
 							<span>Followers</span>
 						</a>
-						<a class="tabAction" role="button" href="#following" onclick="changeTab(event, 'following')">
+						<a class="tabAction" role="button" onclick="changeTab(event, 'following')">
 							<span>{{ owner.followers.count }}</span>
 							<span>Following</span>
 						</a>
