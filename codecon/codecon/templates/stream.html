@@ -14,7 +14,7 @@
 	<div class="postContent">
 		<div class="contentTitle">{{ item.title }}</div>
 		<div class="contentType">{{ item.category }} : {{ item.language }}</div>
-		<div class="contentBody">{{ item.content }}</div>
+		<div class="contentBody">{{ item.content | safe }}</div>
 	</div>
 </div>
 <div class="postActions">
@@ -39,13 +39,18 @@
 							<div class="commentUser">@{{ comment.owner }}</div>
 						</div>
 						<div class="commentContent">
-							<div class="contentText">{{ comment.content }}</div>
+							<div id="comment_content{{comment.pk}}" class="contentText">{{ comment.content }}</div>
+							<form style="display: none;" id="edit_comment{{comment.pk}}"  class="commentForm" method="POST" action="{% url 'comments:update' pk=comment.pk %}?next={{ request.path }}">
+								{% csrf_token %}
+								<input class="commentBox" type="text" name="content" contenteditable="true" placeholder="Update Comment" value="{{ comment.content }}">
+							</form>
 							<div class="commentStamp">on {{ comment.date_created }}</div>
 						</div>
+						
 						<div class="commentActions">
 							{% if comment.is_owner %}
 								<div class="functionSpan">
-									<span class="function"><a href="">Edit</a></span>
+									<span class="function"><a href="#" onclick="showEditForm(event, {{comment.pk}})">Edit</a></span>
 									<span class="function"><a href="{% url 'comments:delete' pk=comment.pk %}?next={{ request.path }}">Delete</a></span>
 								</div>
 							{% endif %}
@@ -56,3 +61,14 @@
 		</div>
 	</div>
 </div>
+
+{% block javascripts %}
+		<script type="text/javascript">
+			function showEditForm(event,pk){
+				event.preventDefault()
+				localStorage['scroll_position'] = $(window).scrollTop();
+				$("#comment_content" + pk).hide()
+				$("#edit_comment" + pk).css("display", "block")	
+			}
+		</script>
+{% endblock %}

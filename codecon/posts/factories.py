@@ -4,6 +4,9 @@ from posts.models import Post, Like
 
 from comments.models import Comment
 
+import markdown
+from mdx_gfm import GithubFlavoredMarkdownExtension
+
 
 class PostFactory:
 
@@ -24,6 +27,8 @@ class PostFactory:
                     item.is_owner = False
             post.all_comments = comments
             post.all_likes = Like.objects.filter(liked_post=post)
+            post.content =  markdown.markdown(post.content,
+                         extensions=[GithubFlavoredMarkdownExtension()])
 
         return posts
 
