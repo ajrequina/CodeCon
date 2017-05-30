@@ -6,14 +6,79 @@
 
 {% block css %}
 	{% load static %}
-	<link rel="stylesheet" href="{% static 'css/post.css' %}">
+	<!-- <link rel="stylesheet" href="{% static 'css/post.css' %}"> -->
+	<link rel="stylesheet" href="{% static 'css/stream.css' %}">
+	<link rel="stylesheet" href="{% static 'css/comment.css' %}">
+	<link rel="stylesheet" href="{% static 'css/home.css' %}">
 {% endblock %}
 
 {% block content %}
-	<a href="{% url 'accounts:logout' %}">Logout</a>
-	<a href="{% url 'posts:list' page_type='stream' %}">Home</a>
-	<a href="{% url 'posts:list' page_type='profile' %}">All Posts</a>
-	<hr>
+	<div class="content">
+		<div class="mainPanel">
+			<div class="postItem">
+				<div class="postOwner">
+					<div class="ownerDP"><img src="{{MEDIA_ROOT}}{{ post.owner.my_profile.profile_photo_url }}"></div>
+					<div class="ownerDetails">
+						<div class="ownerName">
+							<span class="nameFull">{{ post.owner.first_name }} {{ post.owner.last_name }}</span>
+							<span class="nameUser">@{{ post.owner }}</span>
+						</div>
+						<div class="timeStamp">{{ item.date_created }}<a href=".commentBox"></a></div>
+					</div>
+					<!-- <div class="starButton"><img src="{% static 'images/star.png' %}"></div> -->
+				</div>
+				<div class="postContent">
+					<div class="contentTitle">{{ post.title }}</div>
+					<div class="contentType">{{ post.category }} : {{ item.language }}</div>
+					<div class="contentBody">{{ post.content | safe }}</div>
+				</div>
+			</div>
+			<div class="postActions">
+				<div class="actionSpan">
+					<span class="action">
+						<a href="{% url 'posts:like' post_id=post.pk %}?next={{request.path}}">{{post.all_likes.count}} Star</a>
+					</span>
+					<span class="action"><a href="">Reply</a></span>
+				</div>
+				<div class="actionComment">
+					<form class="commentForm" method="POST" action="{% url 'comments:add' post_id=post.pk %}?next={{ request.path }}">
+						{% csrf_token %}
+						<input class="commentBox" type="text" name="content" contenteditable="true" placeholder="Enter Comment Here">
+					</form>
+					<div class="commentStream">
+						{% for comment in post.all_comments %}
+							<div class="commentItem">
+								<div class="commentDP"><img src="{{MEDIA_ROOT}}{{ comment.owner.my_profile.profile_photo_url }}"></div>
+								<div class="commentRight">
+									<div class="commentOwner">
+										<div class="commentFull">{{ comment.owner.first_name }} {{ comment.owner.last_name }}</div>
+										<div class="commentUser">@{{ comment.owner }}</div>
+									</div>
+									<div class="commentContent">
+										<div id="comment_content{{comment.pk}}" class="contentText">{{ comment.content }}</div>
+										<form style="display: none;" id="edit_comment{{comment.pk}}"  class="commentForm" method="POST" action="{% url 'comments:update' pk=comment.pk %}?next={{ request.path }}">
+											{% csrf_token %}
+											<input class="commentBox" type="text" name="content" contenteditable="true" placeholder="Update Comment" value="{{ comment.content }}">
+										</form>
+										<div class="commentStamp">on {{ comment.date_created }}</div>
+									</div>
+									
+									<div class="commentActions">
+										{% if comment.is_owner %}
+											<div class="functionSpan">
+												<span class="function"><a href="#" onclick="showEditForm(event, {{comment.pk}})">Edit</a></span>
+												<span class="function"><a href="{% url 'comments:delete' pk=comment.pk %}?next={{ request.path }}">Delete</a></span>
+											</div>
+										{% endif %}
+									</div>
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+
+	<!-- <hr>
 		<div>
 			<h1>{{ post.title }}</h1> 
 			{{ post.date_created }} <br>
@@ -60,7 +125,9 @@
 
 			
 		</div>
-	<hr>
+	<hr> -->
+		</div>
+	</div>
 {% endblock %}
 
 {% block javascripts %}

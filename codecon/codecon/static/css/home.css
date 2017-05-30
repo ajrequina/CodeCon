@@ -17,7 +17,12 @@
 .minProfile{
 	width: 100%;
 	height: 150px;
-	background-color: grey;
+	background-color: white;
+	border: 1px solid #4dc96b;
+	display: flex;
+	justify-content: center;
+	position: relative;
+	padding-top: 10px;
 }
 
 .postStream{
