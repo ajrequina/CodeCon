@@ -133,6 +133,14 @@
 {% block javascripts %}
 	{% load static %}
 	<script src="{% static 'js/post.js' %}"></script>
+	<script type="text/javascript">
+			function showEditForm(event,pk){
+				event.preventDefault()
+				localStorage['scroll_position'] = $(window).scrollTop();
+				$("#comment_content" + pk).hide()
+				$("#edit_comment" + pk).css("display", "block")	
+			}
+		</script>
 {% endblock %}
 
 

@@ -150,14 +150,19 @@ def top10(request):
     posts = []
     num = 10
     curr_week = datetime.datetime.now().isocalendar()[1]
-    while num > 0 and Post.objects.all().count() > 0:
-        for post in Post.objects.all():
-            post_week = post.date_created.date().isocalendar()[1]
-            if post_week == curr_week:
-                if len(posts) < 10:
-                    posts.append(post)
-        curr_week -= 1
-        num = 10 - len(posts)
+    print(curr_week)
+    if Post.objects.all().count() <= 10:
+        posts = Post.objects.all()
+    else:
+        while num > 0 and Post.objects.all().count() > 0:
+            for post in Post.objects.all():
+                post_week = post.date_created.date().isocalendar()[1]
+                if post_week == curr_week:
+                    if len(posts) < 10:
+                        posts.append(post)
+
+            curr_week -= 1
+            num = 10 - len(posts)
 
     posts = sorted(posts, key=lambda t: t.get_score, reverse=True)
     return render(request, 'top10.html', {"top_posts" : posts})
