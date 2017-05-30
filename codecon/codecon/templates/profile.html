@@ -69,11 +69,11 @@
 							<span>{{ posts.count }}</span>
 							<span>Published</span>
 						</a>
-						<a class="tabAction" role="button" onclick="changeTab(event, 'followers')">
+						<a class="tabAction" role="button" id="show-followers" onclick="changeTab(event, 'followers')" href="{% url 'profiles:follow_page' pk=owner.pk page_type='followers' %}">
 							<span>{{ owner.followed.count }}</span>
 							<span>Followers</span>
 						</a>
-						<a class="tabAction" role="button" onclick="changeTab(event, 'following')">
+						<a class="tabAction" role="button" id="show-following"  onclick="changeTab(event, 'following')" href="{% url 'profiles:follow_page' pk=owner.pk page_type='following' %}">
 							<span>{{ owner.followers.count }}</span>
 							<span>Following</span>
 						</a>
@@ -100,28 +100,20 @@
 					{% for item in posts %}
 						{% if item.owner == owner %}
 			   				{% include "stream.html" %}
-						{% endif %}
+							{% endif %}
 			   		{% endfor %}
 				</div>
 			</div>
 			<div class="tabPanel" id="followers" style="display: none;">
 				<div class="postStream" >
 					<h2>{{ type }} Followers</h2>
-			        {% for follow in follows %}
-			            {% if type == "followers" %}
-			              	<a href="{% url 'posts:list' page_type='profile' user_id=follow.follower.pk %}">{{ follow.follower.username }}</a>
-			            {% endif %}
-			        {% endfor %}
+					<div id="followers-list"></div>
 				</div>
 			</div>
 			<div class="tabPanel" id="following" style="display: none;">
 				<div class="postStream" >
 					<h2>{{ type }} Following</h2>
-			        {% for follow in follows %}
-						{% if type == "following" %}
-		              		<a href="{% url 'posts:list' page_type='profile' user_id=follow.followed.pk %}">{{ follow.followed.username }}</a>
-		            	{% endif %}
-			        {% endfor %}
+					<div id="following-list"></div>
 				</div>
 			</div>
 			{% endblock %}
@@ -149,6 +141,7 @@
 	    }
 	  </script>
 	<script src="{% static 'js/drawer.js' %}"></script>
+	<script src="{% static 'js/follow.js' %}"></script>
 	<script type="text/javascript">
 		// function doThis(){
 		// 	$("#upButton").css("display", "block")

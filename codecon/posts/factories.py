@@ -15,7 +15,6 @@ class PostFactory:
                 owners.append(item.follower)
 
         posts = posts.filter(owner__in=owners)
-
         for post in posts:
             comments = Comment.objects.filter(commented_post=post)
             for item in comments:
