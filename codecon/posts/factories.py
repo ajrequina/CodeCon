@@ -12,7 +12,7 @@ class PostFactory:
         owners = [user]
         if page_type == "stream":
             for item in user.followed.all():
-                owners.append(item.followed)
+                owners.append(item.follower)
 
         posts = posts.filter(owner__in=owners)
 
