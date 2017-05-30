@@ -7,7 +7,7 @@
 				<span class="nameFull">{{ item.owner.first_name }} {{ item.owner.last_name }}</span>
 				<span class="nameUser">@{{ item.owner }}</span>
 			</div>
-			<div class="timeStamp">{{ item.date_created }}<a href=".commentBox"></a></div>
+			<div class="timeStamp"><a href="{% url 'posts:detail' pk=item.pk %}">{{ item.date_created }}</a><a href=".commentBox"></a></div>
 		</div>
 		<!-- <div class="starButton"><img src="{% static 'images/star.png' %}"></div> -->
 	</div>
@@ -23,6 +23,10 @@
 			<a href="{% url 'posts:like' post_id=item.pk %}?next={{request.path}}">{{item.all_likes.count}} Star</a>
 		</span>
 		<span class="action"><a href="">Reply</a></span>
+		{% if item.owner == owner %}
+			<span class="action"><a href="{% url 'posts:update' pk=item.pk %}">Update</a></span>
+			<span class="action"><a href="{% url 'posts:delete' pk=item.pk %}?next={{ request.path }}">Delete</a></span>
+		{% endif %}
 	</div>
 	<div class="actionComment">
 		<form class="commentForm" method="POST" action="{% url 'comments:add' post_id=item.pk %}?next={{ request.path }}">
