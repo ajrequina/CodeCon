@@ -12,10 +12,9 @@ class PostFactory:
         owners = [user]
         if page_type == "stream":
             for item in user.followed.all():
-                owners.append(item.followed)
+                owners.append(item.follower)
 
         posts = posts.filter(owner__in=owners)
-
         for post in posts:
             comments = Comment.objects.filter(commented_post=post)
             for item in comments:
