@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.db.models import Q
 from django.contrib.auth.models import User
-
+from profiles.models import Follow
 from posts.models import Post
 import markdown
 from mdx_gfm import GithubFlavoredMarkdownExtension
@@ -31,6 +31,14 @@ def search_page(request):
     for post in posts:
         post.content =  markdown.markdown(post.content,
                          extensions=[GithubFlavoredMarkdownExtension()])
+        
+    for user in users:
+        try:
+            Follow.objects.get(follower=request.user, followed=user)
+            user.is_followed = True
+        except Exception as e:
+            user.is_followed = False
+
     context = {
         "query" : query,
         "users" : users,

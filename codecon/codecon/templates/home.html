@@ -24,7 +24,8 @@
 			<div class="buttonSpan">
 				<a class="postButton" href="#navbar">CREATE CONTENT</a>
 			</div>
-			<div id="top10-list"></div>			{% block stream %}
+			<div id="top10-list"></div>			
+			{% block stream %}
 				<div class="postStream">
 					{% for item in posts %}
 			   			{% include "stream.html" %}

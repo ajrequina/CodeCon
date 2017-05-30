@@ -1,4 +1,4 @@
-<h3 style="background-color: #4dc96b;">TOP 10 WEEKLY POSTS</h3>
+<h3 style="background-color: #4dc96b; color: white;">TOP 10 WEEKLY POSTS</h3>
 <ol class="tens">
 	{% for post in top_posts %}
 		<li><a href="{% url 'posts:detail' pk=post.pk %}">{{ post.title }}</a></li>

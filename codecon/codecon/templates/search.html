@@ -38,6 +38,13 @@
         <div class="profileItem" style="">
           <div class="profFrame">
             <img class="profPhoto" src="{{MEDIA_ROOT}}{{ item.my_profile.profile_photo_url }}">
+            {% if item != request.user %}
+             {% if item.is_followed %}
+                <a style="position: absolute; bottom: 0px; width: 70px; background-color: #4dc96b; color: white; text-decoration: none; text-align: center; justify-content: center; border-radius: 20px; font-size: 1.5vh; margin: 5px;" role="button" href="{% url 'profiles:unfollow' pk=item.pk %}?next={{request.path}}">UNFOLLOW</a>
+             {% elif not item.is_followed %}
+                <a style="position: absolute; bottom: 0px; width: 70px; background-color: #4dc96b; color: white; text-decoration: none; text-align: center; justify-content: center; border-radius: 20px; font-size: 1.5vh; margin: 5px;" role="button" href="{% url 'profiles:follow' pk=item.pk %}?next={{request.path}}">FOLLOW</a>
+             {% endif %}
+           {% endif %}
           </div>
           <div class="profNames">
             <a href="{% url 'posts:list' page_type='profile' user_id=item.pk%}">
