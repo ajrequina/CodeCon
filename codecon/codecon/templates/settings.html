@@ -32,7 +32,7 @@
         </div>
 
         <div class="form signin rounded" style="padding-top: 20px; padding-bottom: 20px; border-radius: 10px;">
-          <label style="font-weight: bold; font-size: 3vh;">Personal Information</label>
+          <label style="font-weight: bold; font-size: 3vh;">Credentials</label>
           <form method="post" action="{% url 'profiles:change_credentials' %}">
             {% csrf_token %}
             <br><input type="text" name="username" id="username" placeholder="Username" value="{{ user.username }}"><br>
@@ -45,7 +45,7 @@
         </div>
 
         <div class="form signin rounded" style="padding-top: 20px; padding-bottom: 20px; border-radius: 10px;">
-          <label style="font-weight: bold; font-size: 3vh;">Credentials</label>
+          <label style="font-weight: bold; font-size: 3vh;">Password</label>
           <form method="post" action="{% url 'profiles:change_password' %}">
             {% csrf_token %}
             <br>

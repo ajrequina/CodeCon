@@ -65,15 +65,15 @@
 						</div>
 					</div>
 					<div class="tabHolder">
-						<a class="tabAction" role="button" href="">
+						<a class="tabAction" role="button" href="#posts" onclick="changeTab(event, 'posts')">
 							<span>{{ posts.count }}</span>
 							<span>Published</span>
 						</a>
-						<a class="tabAction" role="button" href="{% url 'profiles:follow_page' pk=owner.pk page_type='followers' %}">
+						<a class="tabAction" role="button" href="#followers" onclick="changeTab(event, 'followers')">
 							<span>{{ owner.followed.count }}</span>
 							<span>Followers</span>
 						</a>
-						<a class="tabAction" role="button" href="{% url 'profiles:follow_page' pk=owner.pk page_type='following' %}">
+						<a class="tabAction" role="button" href="#following" onclick="changeTab(event, 'following')">
 							<span>{{ owner.followers.count }}</span>
 							<span>Following</span>
 						</a>
@@ -89,19 +89,41 @@
 				<a class="postButton" href="#navbar">CREATE CONTENT</a>
 				{% endif %}
 			</div>
-			<h2>TOP 10 WEEKLY POSTS</h2>
-			<div id="top10-list"></div>
 			{% if owner == request.user %}
 				<div id="notifs"></div>
 			{% endif %}
 			{% block stream %}
+			<div class="tabPanel" id="posts">
+				<h2>TOP 10 WEEKLY POSTS</h2>
+				<div id="top10-list"></div>
 				<div class="postStream">
 					{% for item in posts %}
-						{% if item.owner == request.user %}
+						{% if item.owner == owner %}
 			   				{% include "stream.html" %}
 						{% endif %}
 			   		{% endfor %}
 				</div>
+			</div>
+			<div class="tabPanel" id="followers" style="display: none;">
+				<div class="postStream" >
+					<h2>{{ type }} Followers</h2>
+			        {% for follow in follows %}
+			            {% if type == "followers" %}
+			              	<a href="{% url 'posts:list' page_type='profile' user_id=follow.follower.pk %}">{{ follow.follower.username }}</a>
+			            {% endif %}
+			        {% endfor %}
+				</div>
+			</div>
+			<div class="tabPanel" id="following" style="display: none;">
+				<div class="postStream" >
+					<h2>{{ type }} Following</h2>
+			        {% for follow in follows %}
+						{% if type == "following" %}
+		              		<a href="{% url 'posts:list' page_type='profile' user_id=follow.followed.pk %}">{{ follow.followed.username }}</a>
+		            	{% endif %}
+			        {% endfor %}
+				</div>
+			</div>
 			{% endblock %}
 		</div>	
 	</div>
@@ -109,6 +131,23 @@
 	
 {% block javascripts %}
 	{% load static %}
+	<script>
+	    function changeTab(evt, tabName) {
+	      var i, x, tablinks;
+	      x = document.getElementsByClassName("tabPanel");
+	      for (i = 0; i < x.length; i++) {
+	          x[i].style.display = "none";
+	      }
+	      // tablinks = document.getElementsByClassName("tablink");
+	      // for (i = 0; i < x.length; i++) {
+	      //     x[i].style.backgroundcolor = "white";
+	      //     x[i].style.color = "#4dc96b";
+	      // }
+	      document.getElementById(tabName).style.display = "block";
+	      // evt.currentTarget.className.style.color = "white";
+	      // evt.currentTarget.className.style.backgroundcolor = "#4dc96b";
+	    }
+	  </script>
 	<script src="{% static 'js/drawer.js' %}"></script>
 	<script type="text/javascript">
 		// function doThis(){
