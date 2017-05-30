@@ -21,6 +21,8 @@
 	border: 1px solid #4dc96b;
 	display: flex;
 	justify-content: center;
+	position: relative;
+	padding-top: 10px;
 }
 
 .postStream{
