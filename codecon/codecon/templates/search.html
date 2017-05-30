@@ -10,51 +10,7 @@
   <link rel="stylesheet" href="{% static 'css/stream.css' %}">
   <link rel="stylesheet" href="{% static 'css/comment.css' %}">
   <link rel="stylesheet" href="{% static 'css/profile.css' %}">
-  <style type="text/css">
-    .profileItem{
-      background-color: lightgrey;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding-bottom: 15px;
-    }
-
-    .profFrame{
-      margin: 15px;
-      display: flex;
-      justify-content: center;
-      width: 100px;
-      height: 100px;
-      border: 3px solid white;
-    }
-
-    .profFrame>img{
-      width: 100%;
-      height: auto;
-      background-color: white;
-    }
-
-    .profileItem>a{
-      color: green;
-      display: block;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .profileItem>a>p{
-      text-align: center;
-      margin: 0px;
-    }
-
-    .profileItem>a:hover{
-      color: crimson;
-      text-decoration: underline;
-    }
-  </style>
+  <link rel="stylesheet" href="{% static 'css/minprofile.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -63,8 +19,8 @@
     <div class="mainPanel">
       <header style="color: green; margin-top: 10px;">Search Results</header>
       <div class="tabBar" style="width: 100%; display: flex; flex-direction: row; margin-bottom: 5px;">
-        <button style="display: block; width: 100%; background-color: #4dc96b; color: white; font-size: 4vh; padding-top: 10px; padding-bottom: 10px; border: none; box-shadow: 1px 1px black;" class="tablink" onclick="openCity(event,'postsResults')">POSTS</button>
-        <button style="display: block; width: 100%; background: white; color: #4dc96b; font-size: 4vh; padding-top: 10px; padding-bottom: 10px; border: none; box-shadow: 1px 1px black;" class="tablink" onclick="openCity(event,'usersResults')">USERS</button>
+        <button style="display: block; width: 100%; background-color: #4dc96b; color: white; font-size: 4vh; padding-top: 10px; padding-bottom: 10px; border: none; box-shadow: 1px 1px black;" class="tablink" id="postTab" onclick="openCity(event, 'postTab' ,'postsResults')">POSTS</button>
+        <button style="display: block; width: 100%; background: white; color: #4dc96b; font-size: 4vh; padding-top: 10px; padding-bottom: 10px; border: none; box-shadow: 1px 1px black;" class="tablink" id="resultTab" onclick="openCity(event, 'resultTab', 'usersResults')">USERS</button>
       </div>
 
       <div id="postsResults" class="resultPanel">
@@ -77,19 +33,21 @@
         {% endblock %}
       </div>
 
-      <div id="usersResults" class="resultPanel" style="display:none">
+      <div id="usersResults" class="resultPanel userList" style="display:none">
         {% for item in users %}
-         <div class="profileItem" style="">
-         <div class="profFrame">
-           <img class="profPhoto" src="{{MEDIA_ROOT}}{{ item.owner.my_profile.profile_photo_url }}">
-         </div>
-         
-          <a href="{% url 'posts:list' page_type='profile' user_id=item.pk%}">
+        <div class="profileItem" style="">
+          <div class="profFrame">
+            <img class="profPhoto" src="{{MEDIA_ROOT}}{{ item.my_profile.profile_photo_url }}">
+          </div>
+          <div class="profNames">
+            <a href="{% url 'posts:list' page_type='profile' user_id=item.pk%}">
+              <p>
                 <p>{{ item.first_name }} {{ item.last_name }}</p>
-                <p>@{{ item.username }}</p>
-                <p>{{ item.email }}</p>              
-           </a>
-         </div> <br>
+                <p>@{{ item.username }}</p> 
+              </p>          
+             </a>
+          </div>
+        </div>
         {% endfor %}
       </div>
       <br>
@@ -97,20 +55,24 @@
   </div>
 
   <script>
-    function openCity(evt, cityName) {
+    function openCity(evt, tabName, cityName) {
       var i, x, tablinks;
       x = document.getElementsByClassName("resultPanel");
       for (i = 0; i < x.length; i++) {
-          x[i].style.display = "none";
+        x[i].style.display = "none";
+        document.getElementById(tabName).style.color = "#4dc96b";
+        document.getElementById(tabName).style.backgroundColor = "white";
       }
-      // tablinks = document.getElementsByClassName("tablink");
-      // for (i = 0; i < x.length; i++) {
-      //     x[i].style.backgroundcolor = "white";
-      //     x[i].style.color = "#4dc96b";
-      // }
-      document.getElementById(cityName).style.display = "block";
-      // evt.currentTarget.className.style.color = "white";
-      // evt.currentTarget.className.style.backgroundcolor = "#4dc96b";
+
+      x = document.getElementsByClassName("tablink");
+      for (i = 0; i < x.length; i++) {
+        x[i].style.backgroundColor = "white";
+        x[i].style.color = "#4dc96b";
+      }
+
+      document.getElementById(cityName).style.display = "flex";
+      document.getElementById(tabName).style.color = "white";
+      document.getElementById(tabName).style.backgroundColor = "#4dc96b";
     }
   </script>
 {% endblock %}

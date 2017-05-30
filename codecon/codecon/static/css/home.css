@@ -19,6 +19,8 @@
 	height: 150px;
 	background-color: white;
 	border: 1px solid #4dc96b;
+	display: flex;
+	justify-content: center;
 }
 
 .postStream{

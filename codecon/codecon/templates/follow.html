@@ -1,10 +1,33 @@
-<div>
-  <h2>{{ type }}</h2>
-{% for follow in follows %}
+<div class="userList" >
+  {% for follow in follows %}
     {% if type == "following" %}
-      <a href="{% url 'posts:list' page_type='profile' user_id=follow.followed.pk %}">{{ follow.followed.username }}</a>
+      <div class="profileItem" style="">
+        <div class="profFrame">
+          <img class="profPhoto" src="{{MEDIA_ROOT}}{{ follow.followed.my_profile.profile_photo_url }}">
+        </div>
+        <div class="profNames">
+          <a href="{% url 'posts:list' page_type='profile' user_id=follow.followed.pk %}">
+            <p>
+              <p>{{ follow.followed.first_name }} {{ follow.followed.last_name }}</p>
+              <p>@{{ follow.followed.username }}</p>
+            </p>             
+          </a>
+        </div>
+      </div><br>
     {% elif type == "followers" %}
-      <a href="{% url 'posts:list' page_type='profile' user_id=follow.follower.pk %}">{{ follow.follower.username }}</a>
+      <div class="profileItem" style="">
+        <div class="profFrame">
+          <img class="profPhoto" src="{{MEDIA_ROOT}}{{ follow.follower.my_profile.profile_photo_url }}">
+        </div>
+        <div class="profNames">
+          <a href="{% url 'posts:list' page_type='profile' user_id=follow.follower.pk %}">
+            <p>
+              <p>{{ follow.follower.first_name }} {{ follow.follower.last_name }}</p>
+              <p>@{{ follow.follower.username }}</p>
+            </p>             
+          </a>
+        </div>
+      </div><br>
     {% endif %}
-{% endfor %}
+  {% endfor %}
 </div>
