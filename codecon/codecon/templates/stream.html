@@ -14,7 +14,7 @@
 	<div class="postContent">
 		<div class="contentTitle">{{ item.title }}</div>
 		<div class="contentType">{{ item.category }} : {{ item.language }}</div>
-		<div class="contentBody">{{ item.content }}</div>
+		<div class="contentBody">{{ item.content | safe }}</div>
 	</div>
 </div>
 <div class="postActions">

@@ -18,7 +18,7 @@
 			<h1>{{ post.title }}</h1> 
 			{{ post.date_created }} <br>
 			{{ post.category }} : {{ post.language }} <br>
-			<h3>{{ post.content }}</h3> <br>
+			<h3>{{ post.content | safe }}</h3> <br>
 			{% if post.is_owner %}
 				<a href="{% url 'posts:update' pk=post.pk %}">Update</a>
 				<a href="{% url 'posts:delete' pk=post.pk %}">Delete</a>

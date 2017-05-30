@@ -14,6 +14,9 @@ from comments.models import Comment
 
 from profiles.models import Follow
 
+import markdown
+from mdx_gfm import GithubFlavoredMarkdownExtension
+
 
 @login_required
 def add(request):
@@ -75,7 +78,9 @@ def detail(request, pk):
 
     post.all_comments = comments
     post.all_likes = Like.objects.filter(liked_post=post)
-
+    post.content =  markdown.markdown(post.content,
+                         extensions=[GithubFlavoredMarkdownExtension()])
+    print(post.content)
     if post.owner == request.user:
         post.is_owner = True
     else:
