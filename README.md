@@ -27,6 +27,8 @@ and/or algorithms that are the talked by most users within a week.
 
 ### User Module
 
+![screenshot from 2017-05-30 12-49-40](https://cloud.githubusercontent.com/assets/24803247/26568502/8869e5f0-4536-11e7-9042-ee9d5f4d1fd9.png)
+
 * Signup/Register
    - Users can register on the site by providing their email, username, password, firstname and lastname
    - Email addresses should be unique as well as the username
