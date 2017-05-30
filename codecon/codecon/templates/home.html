@@ -14,16 +14,17 @@
 {% block content %}
 	<div class="content">
 		<div class="mainPanel">
-			<div id="userPanel" class="minProfile"></div>
+			<div id="userPanel" class="minProfile">
+<!-- 				<div class="notifsArea"></div>
+ -->				<div id="notifs"></div>
+			</div>
 			{% block publisher %}
 				{% include "publisher.html" %}
 			{% endblock%}
 			<div class="buttonSpan">
 				<a class="postButton" href="#navbar">CREATE CONTENT</a>
 			</div>
-			<h2>TOP 10 WEEKLY POSTS</h2>
-			<div id="top10-list"></div>
-			<div id="notifs"></div>
+			<div id="top10-list"></div>			
 			{% block stream %}
 				<div class="postStream">
 					{% for item in posts %}

@@ -6,9 +6,13 @@ $("#show-followers").click(function(event){
      url: link,
      data: "",
      dataType : 'html',
-     success: get_results
+     success: get_followers
   });
 })
+
+function get_followers(data, textStatus, jqXHR){
+  $("#followers-list").html(data)
+}
 
 $("#show-following").click(function(event){
   event.preventDefault()
@@ -18,10 +22,10 @@ $("#show-following").click(function(event){
      url: link,
      data: "",
      dataType : 'html',
-     success: get_results
+     success: get_following
   });
 })
 
-function get_results(data, textStatus, jqXHR){
-  $("#follow-list").html(data)
+function get_following(data, textStatus, jqXHR){
+  $("#following-list").html(data)
 }

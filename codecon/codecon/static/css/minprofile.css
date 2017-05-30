@@ -1,0 +1,130 @@
+  .userList{
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center; /*
+    flex-wrap: wrap; 
+    flex-direction: row; 
+    justify-content: center;*/
+    margin-bottom: 50px;
+  }
+
+  .profileItem{
+    position: relative;
+    display: flex;
+    margin: 10px;
+    width: 80%;
+    min-height: 80px;
+  }
+
+  .profFrame{
+    position: relative;
+    display: flex;
+    width: 80px;
+    height: 80px;
+    overflow-y: hidden;
+    align-items: center;
+    border: 1px solid lightgrey;
+    background-color: white;
+  }
+
+  .profFrame>img{
+    width: 80px;
+    height: auto;
+    background-color: white;
+  }
+
+  .profNames{
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    left: 90px;
+    display: flex;
+    align-items: center;
+    background-color: #4dc96b;
+    height: 100%;
+    font-weight: bold;
+    border-radius: 15px;
+  }
+
+  .profNames>a{
+    margin: 0px auto;
+    color: white;
+  }
+
+  .profNames>a:hover{
+    color: lightslategrey;
+    text-decoration: underline;
+  }
+  
+  .profNames>a>p{
+    text-align: center;
+    margin: 0px auto;
+  }
+
+
+
+  @media only screen and (min-width: 600px){
+    .profileItem{
+      width: calc(50% - 20px);
+    }
+
+    .profNames{
+
+    }
+  }
+
+  @media only screen and (min-width: 720px){
+
+  }
+/*
+  .profileItem{
+    background-color: lightgrey;
+    border-radius: 10px;
+    position: relative;
+    display: flex;
+    flex-wrap: space-around;
+    min-width: calc(50% - 20px);
+    height: 100px;
+    margin: 10px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .profFrame>img{
+    width: 100%;
+    height: auto;
+    background-color: white;
+  }
+
+  .profFrame{
+    margin: 10px;
+    display: flex;
+    width: 75px;
+    height: 75px;
+    border: 3px solid white;
+  }
+
+  .profileItem>a{
+    min-width: calc(100% - 100px);
+    color: green;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .profileItem>a>p{
+    text-align: center;
+    margin: 0px;
+  }
+
+  .profileItem>a:hover{
+    color: crimson;
+    text-decoration: underline;
+  }*/
